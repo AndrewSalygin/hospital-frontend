@@ -9,8 +9,6 @@ import TablePage from './components/TablePage'
 import PatientDetails from './pages/Patients/PatientDetails'
 import EditPatient from './pages/Patients/EditPatient';
 
-import { patients as initialPatients } from './fakeData/Patients';
-
 import PatientsList from './pages/Patients/PatientsList';
 import PatientsListAdmin from './pages/Admin/Patients/PatientsListAdmin';
 import AddPatient from './pages/Patients/AddPatient';
@@ -19,45 +17,17 @@ import AddPatientAdmin from './pages/Admin/Patients/AddPatientAdmin'
 import EditPatientAdmin from './pages/Admin/Patients/EditPatientAdmin'
 import PatientDetailsAdmin from './pages/Admin/Patients/PatientDetailsAdmin'
 import TrashPatientsListAdmin from './pages/Admin/Patients/TrashPatientsListAdmin';
+import UsersListAdmin from './pages/Admin/Users/UsersListAdmin';
+
+import { patients as initialPatients } from './fakeData/Patients';
+import { users as initialUsers } from './fakeData/Users';
+
+import { updatePatient, addPatient, deletePatient, deleteForeverPatient, unDeletePatient } from './scripts/PatientsScripts'
+import { deleteForeverUser, changeRights } from './scripts/UsersScripts';
 
 function App() {
-  const [patients, setPatients] = useState(initialPatients);
-
-  const updatePatient = (updatedPatient) => {
-    setPatients(patients.map(p => p.patientId === updatedPatient.patientId ? updatedPatient : p));
-  };
-
-  const addPatient = (newPatient) => {
-    const newPatientId = patients.length ? Math.max(...patients.map(p => p.patientId)) + 1 : 1;
-    
-    setPatients([...patients, { ...newPatient, patientId: newPatientId }]);
-  };
-  
-  const deletePatient = (patientId) => {
-    setPatients(
-      patients.map(patient => {
-        if (patient.patientId === patientId) {
-          return { ...patient, isDeleted: true };
-        }
-        return patient;
-      })
-    );
-  };
-
-  const deleteForeverPatient = (patientId) => {
-    setPatients(patients.filter(patient => patient.patientId !== patientId));
-  };
-
-  const unDeletePatient = (patientId) => {
-    setPatients(
-      patients.map(patient => {
-        if (patient.patientId === patientId) {
-          return { ...patient, isDeleted: false };
-        }
-        return patient;
-      })
-    );
-  };
+const [patients, setPatients] = useState(initialPatients);
+const [users, setUsers] = useState(initialUsers);
 
   return (
     <>
@@ -66,6 +36,18 @@ function App() {
           <Route path = "/login" element={<Login/>} />
           <Route path = "/register" element={<Registration/>} />
           <Route path = "/admin/login" element={<AdminLogin/>} />
+          <Route 
+            path = "/admin/users"
+            element={
+            <TablePage 
+              users={ users } 
+              deleteUser = { (userId) => { deleteForeverUser(users, setUsers, userId) } }
+              changeRights = { (userId, newRole) => { changeRights(users, setUsers, userId, newRole) } }
+              titleName="Список пользователей"
+              ListComponent={UsersListAdmin}  
+            />
+            } 
+          />
           <Route 
             path = "/patients"
             element={
@@ -78,8 +60,8 @@ function App() {
             />
             } 
           />
-          <Route path = "/admin/new-patient" element={<AddPatientAdmin addPatient={addPatient}/>} />
-          <Route path = "/new-patient" element={<AddPatient addPatient={addPatient}/>} />
+          <Route path = "/admin/new-patient" element={<AddPatientAdmin addPatient={(newPatient) => addPatient(patients, setPatients, newPatient)}/>} />
+          <Route path = "/new-patient" element={<AddPatient addPatient={(newPatient) => addPatient(patients, setPatients, newPatient)}/>} />
           {/*<Route 
             path = "/doctors"
             element={
@@ -100,7 +82,7 @@ function App() {
               titleName="Список пациентов" 
               buttonName="Добавить нового пациента" 
               buttonLink="/admin/new-patient" 
-              deletePatient={deletePatient}
+              deletePatient={(patientId) => deletePatient(patients, setPatients, patientId)}
               ListComponent={PatientsListAdmin}  
             />
             } 
@@ -111,16 +93,16 @@ function App() {
             <TablePage 
               patients={patients} 
               titleName="Список пациентов в архиве" 
-              deletePatient={deleteForeverPatient}
-              unDeletePatient={unDeletePatient}
+              deletePatient={(patientId) => deleteForeverPatient(patients, setPatients, patientId)}
+              unDeletePatient={(patientId) => unDeletePatient(patients, setPatients, patientId)}
               ListComponent={TrashPatientsListAdmin}  
             />
             } 
           />
           <Route path = "/admin/patients/:patientId" element={<PatientDetailsAdmin patients={patients} />} />
-          <Route path="/admin/patients/:patientId/edit" element={<EditPatientAdmin patients={patients} updatePatient={updatePatient} />} />
+          <Route path="/admin/patients/:patientId/edit" element={<EditPatientAdmin patients={patients} updatePatient={(updatedPatient) => updatePatient(patients, setPatients, updatedPatient)} />} />
           <Route path = "/patients/:patientId" element={<PatientDetails patients={patients} />} />
-          <Route path="/patients/:patientId/edit" element={<EditPatient patients={patients} updatePatient={updatePatient} />} />
+          <Route path="/patients/:patientId/edit" element={<EditPatient patients={patients} updatePatient={(updatedPatient) => updatePatient(patients, setPatients, updatedPatient)} />} />
         </Routes>
       </BrowserRouter>
     </>
