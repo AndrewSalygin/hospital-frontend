@@ -7,17 +7,18 @@ const PatientsListAdmin = ({ patients, deletePatient, buttonName, buttonLink }) 
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPatients, setFilteredPatients] = useState(patients);
   const [currentPage, setCurrentPage] = useState(1);
-  const patientsPerPage = 3;
+  const patientsPerPage = 5;
   const visiblePages = 5;
 
   // Update filtered patients based on search term
   useEffect(() => {
     const lowercasedTerm = searchTerm.toLowerCase();
-    setFilteredPatients(
-      patients.filter((patient) =>
+    const visiblePatients = patients.filter(
+      (patient) =>
+        !patient.isDeleted &&
         Object.values(patient).join(' ').toLowerCase().includes(lowercasedTerm)
-      )
     );
+    setFilteredPatients(visiblePatients);
   }, [searchTerm, patients]);
 
   const indexOfLastPatient = currentPage * patientsPerPage;

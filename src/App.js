@@ -18,6 +18,7 @@ import AddPatient from './pages/Patients/AddPatient';
 import AddPatientAdmin from './pages/Admin/Patients/AddPatientAdmin'
 import EditPatientAdmin from './pages/Admin/Patients/EditPatientAdmin'
 import PatientDetailsAdmin from './pages/Admin/Patients/PatientDetailsAdmin'
+import TrashPatientsListAdmin from './pages/Admin/Patients/TrashPatientsListAdmin';
 
 function App() {
   const [patients, setPatients] = useState(initialPatients);
@@ -33,7 +34,29 @@ function App() {
   };
   
   const deletePatient = (patientId) => {
-    setPatients(patients.filter(p => p.patientId !== patientId));
+    setPatients(
+      patients.map(patient => {
+        if (patient.patientId === patientId) {
+          return { ...patient, isDeleted: true };
+        }
+        return patient;
+      })
+    );
+  };
+
+  const deleteForeverPatient = (patientId) => {
+    setPatients(patients.filter(patient => patient.patientId !== patientId));
+  };
+
+  const unDeletePatient = (patientId) => {
+    setPatients(
+      patients.map(patient => {
+        if (patient.patientId === patientId) {
+          return { ...patient, isDeleted: false };
+        }
+        return patient;
+      })
+    );
   };
 
   return (
@@ -79,6 +102,18 @@ function App() {
               buttonLink="/admin/new-patient" 
               deletePatient={deletePatient}
               ListComponent={PatientsListAdmin}  
+            />
+            } 
+          />
+          <Route 
+            path = "/admin/patients/trash"
+            element={
+            <TablePage 
+              patients={patients} 
+              titleName="Список пациентов в архиве" 
+              deletePatient={deleteForeverPatient}
+              unDeletePatient={unDeletePatient}
+              ListComponent={TrashPatientsListAdmin}  
             />
             } 
           />

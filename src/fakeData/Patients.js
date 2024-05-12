@@ -7,7 +7,8 @@ export const patients = [
       gender: 'М',
       dateOfBirth: '1979-02-25',
       phoneNumber: '+79991234567',
-      insuranceInfo: 'Страховая компания "Здоровье", Номер полиса: 1234567890'
+      insuranceInfo: 'Страховая компания "Здоровье", Номер полиса: 1234567890',
+      isDeleted: false
     },
     {
       patientId: 2,
@@ -17,7 +18,8 @@ export const patients = [
       gender: 'Ж',
       dateOfBirth: '1990-07-14',
       phoneNumber: '+79999876543',
-      insuranceInfo: 'Страховая компания "Медицина", Номер полиса: 9876543210'
+      insuranceInfo: 'Страховая компания "Медицина", Номер полиса: 9876543210',
+      isDeleted: false
     },
     {
       patientId: 3,
@@ -27,7 +29,8 @@ export const patients = [
       gender: 'М',
       dateOfBirth: '1995-11-05',
       phoneNumber: '+79997654321',
-      insuranceInfo: 'Страховая компания "Надежда", Номер полиса: 4567891230'
+      insuranceInfo: 'Страховая компания "Надежда", Номер полиса: 4567891230',
+      isDeleted: true
     },
     {
       patientId: 4,
@@ -37,7 +40,8 @@ export const patients = [
       gender: 'Ж',
       dateOfBirth: '1988-03-22',
       phoneNumber: '+79995432109',
-      insuranceInfo: 'Страховая компания "Семья", Номер полиса: 6543210987'
+      insuranceInfo: 'Страховая компания "Семья", Номер полиса: 6543210987',
+      isDeleted: false
     },
     {
       patientId: 5,
@@ -47,7 +51,8 @@ export const patients = [
       gender: 'М',
       dateOfBirth: '1982-09-17',
       phoneNumber: '+79994321098',
-      insuranceInfo: 'Страховая компания "Мир", Номер полиса: 1098765432'
+      insuranceInfo: 'Страховая компания "Мир", Номер полиса: 1098765432',
+      isDeleted: false
     },
     {
       patientId: 6,
@@ -57,146 +62,7 @@ export const patients = [
       gender: 'Ж',
       dateOfBirth: '1993-12-08',
       phoneNumber: '+79993210987',
-      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
-    },
-    {
-      patientId: 7,
-      firstName: 'Екатерина',
-      lastName: 'Попова',
-      middleName: 'Евгеньевна',
-      gender: 'Ж',
-      dateOfBirth: '1993-12-08',
-      phoneNumber: '+79993210987',
-      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
-    },
-    {
-      patientId: 8,
-      firstName: 'Екатерина',
-      lastName: 'Попова',
-      middleName: 'Евгеньевна',
-      gender: 'Ж',
-      dateOfBirth: '1993-12-08',
-      phoneNumber: '+79993210987',
-      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
-    },
-    {
-      patientId: 9,
-      firstName: 'Екатерина',
-      lastName: 'Попова',
-      middleName: 'Евгеньевна',
-      gender: 'Ж',
-      dateOfBirth: '1993-12-08',
-      phoneNumber: '+79993210987',
-      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
-    },
-    {
-      patientId: 10,
-      firstName: 'Екатерина',
-      lastName: 'Попова',
-      middleName: 'Евгеньевна',
-      gender: 'Ж',
-      dateOfBirth: '1993-12-08',
-      phoneNumber: '+79993210987',
-      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
-    },
-    {
-      patientId: 11,
-      firstName: 'Екатерина',
-      lastName: 'Попова',
-      middleName: 'Евгеньевна',
-      gender: 'Ж',
-      dateOfBirth: '1993-12-08',
-      phoneNumber: '+79993210987',
-      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
-    },
-    {
-      patientId: 12,
-      firstName: 'Екатерина',
-      lastName: 'Попова',
-      middleName: 'Евгеньевна',
-      gender: 'Ж',
-      dateOfBirth: '1993-12-08',
-      phoneNumber: '+79993210987',
-      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
-    },
-    {
-      patientId: 13,
-      firstName: 'Екатерина',
-      lastName: 'Попова',
-      middleName: 'Евгеньевна',
-      gender: 'Ж',
-      dateOfBirth: '1993-12-08',
-      phoneNumber: '+79993210987',
-      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
-    },
-    {
-      patientId: 14,
-      firstName: 'Екатерина',
-      lastName: 'Попова',
-      middleName: 'Евгеньевна',
-      gender: 'Ж',
-      dateOfBirth: '1993-12-08',
-      phoneNumber: '+79993210987',
-      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
-    },
-    {
-      patientId: 15,
-      firstName: 'Екатерина',
-      lastName: 'Попова',
-      middleName: 'Евгеньевна',
-      gender: 'Ж',
-      dateOfBirth: '1993-12-08',
-      phoneNumber: '+79993210987',
-      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
-    },
-    {
-      patientId: 16,
-      firstName: 'Екатерина',
-      lastName: 'Попова',
-      middleName: 'Евгеньевна',
-      gender: 'Ж',
-      dateOfBirth: '1993-12-08',
-      phoneNumber: '+79993210987',
-      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
-    },
-    {
-      patientId: 17,
-      firstName: 'Екатерина',
-      lastName: 'Попова',
-      middleName: 'Евгеньевна',
-      gender: 'Ж',
-      dateOfBirth: '1993-12-08',
-      phoneNumber: '+79993210987',
-      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
-    },
-    {
-      patientId: 18,
-      firstName: 'Екатерина',
-      lastName: 'Попова',
-      middleName: 'Евгеньевна',
-      gender: 'Ж',
-      dateOfBirth: '1993-12-08',
-      phoneNumber: '+79993210987',
-      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
-    },
-    {
-      patientId: 19,
-      firstName: 'Екатерина',
-      lastName: 'Попова',
-      middleName: 'Евгеньевна',
-      gender: 'Ж',
-      dateOfBirth: '1993-12-08',
-      phoneNumber: '+79993210987',
-      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
-    },
-    {
-      patientId: 20,
-      firstName: 'Екатерина',
-      lastName: 'Попова',
-      middleName: 'Евгеньевна',
-      gender: 'Ж',
-      dateOfBirth: '1993-12-08',
-      phoneNumber: '+79993210987',
-      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
-    },
+      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098',
+      isDeleted: false
+    }
   ];
