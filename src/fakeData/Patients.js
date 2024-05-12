@@ -58,5 +58,145 @@ export const patients = [
       dateOfBirth: '1993-12-08',
       phoneNumber: '+79993210987',
       insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
-    }
+    },
+    {
+      patientId: 7,
+      firstName: 'Екатерина',
+      lastName: 'Попова',
+      middleName: 'Евгеньевна',
+      gender: 'Ж',
+      dateOfBirth: '1993-12-08',
+      phoneNumber: '+79993210987',
+      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
+    },
+    {
+      patientId: 8,
+      firstName: 'Екатерина',
+      lastName: 'Попова',
+      middleName: 'Евгеньевна',
+      gender: 'Ж',
+      dateOfBirth: '1993-12-08',
+      phoneNumber: '+79993210987',
+      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
+    },
+    {
+      patientId: 9,
+      firstName: 'Екатерина',
+      lastName: 'Попова',
+      middleName: 'Евгеньевна',
+      gender: 'Ж',
+      dateOfBirth: '1993-12-08',
+      phoneNumber: '+79993210987',
+      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
+    },
+    {
+      patientId: 10,
+      firstName: 'Екатерина',
+      lastName: 'Попова',
+      middleName: 'Евгеньевна',
+      gender: 'Ж',
+      dateOfBirth: '1993-12-08',
+      phoneNumber: '+79993210987',
+      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
+    },
+    {
+      patientId: 11,
+      firstName: 'Екатерина',
+      lastName: 'Попова',
+      middleName: 'Евгеньевна',
+      gender: 'Ж',
+      dateOfBirth: '1993-12-08',
+      phoneNumber: '+79993210987',
+      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
+    },
+    {
+      patientId: 12,
+      firstName: 'Екатерина',
+      lastName: 'Попова',
+      middleName: 'Евгеньевна',
+      gender: 'Ж',
+      dateOfBirth: '1993-12-08',
+      phoneNumber: '+79993210987',
+      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
+    },
+    {
+      patientId: 13,
+      firstName: 'Екатерина',
+      lastName: 'Попова',
+      middleName: 'Евгеньевна',
+      gender: 'Ж',
+      dateOfBirth: '1993-12-08',
+      phoneNumber: '+79993210987',
+      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
+    },
+    {
+      patientId: 14,
+      firstName: 'Екатерина',
+      lastName: 'Попова',
+      middleName: 'Евгеньевна',
+      gender: 'Ж',
+      dateOfBirth: '1993-12-08',
+      phoneNumber: '+79993210987',
+      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
+    },
+    {
+      patientId: 15,
+      firstName: 'Екатерина',
+      lastName: 'Попова',
+      middleName: 'Евгеньевна',
+      gender: 'Ж',
+      dateOfBirth: '1993-12-08',
+      phoneNumber: '+79993210987',
+      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
+    },
+    {
+      patientId: 16,
+      firstName: 'Екатерина',
+      lastName: 'Попова',
+      middleName: 'Евгеньевна',
+      gender: 'Ж',
+      dateOfBirth: '1993-12-08',
+      phoneNumber: '+79993210987',
+      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
+    },
+    {
+      patientId: 17,
+      firstName: 'Екатерина',
+      lastName: 'Попова',
+      middleName: 'Евгеньевна',
+      gender: 'Ж',
+      dateOfBirth: '1993-12-08',
+      phoneNumber: '+79993210987',
+      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
+    },
+    {
+      patientId: 18,
+      firstName: 'Екатерина',
+      lastName: 'Попова',
+      middleName: 'Евгеньевна',
+      gender: 'Ж',
+      dateOfBirth: '1993-12-08',
+      phoneNumber: '+79993210987',
+      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
+    },
+    {
+      patientId: 19,
+      firstName: 'Екатерина',
+      lastName: 'Попова',
+      middleName: 'Евгеньевна',
+      gender: 'Ж',
+      dateOfBirth: '1993-12-08',
+      phoneNumber: '+79993210987',
+      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
+    },
+    {
+      patientId: 20,
+      firstName: 'Екатерина',
+      lastName: 'Попова',
+      middleName: 'Евгеньевна',
+      gender: 'Ж',
+      dateOfBirth: '1993-12-08',
+      phoneNumber: '+79993210987',
+      insuranceInfo: 'Страховая компания "Доверие", Номер полиса: 7654321098'
+    },
   ];

@@ -7,13 +7,14 @@ const TablePage = ({ patients, buttonName, buttonLink, titleName, ListComponent 
     <Container className="mt-4" style={{ maxWidth: '1200px', width: '100%' }}>
       <h1>{ titleName }</h1>
       <ListComponent patients={ patients } />
-      <Link to={ buttonLink }>
-        <div className="col text-center">
+
+      <div className="col text-center">
+        <Link to={ buttonLink } style={{ textDecoration: 'none' }}>
           <Button variant="success" className="mt-3 mb-3">
             { buttonName }
           </Button>
-        </div>
-      </Link>
+        </Link>
+      </div>
     </Container>
   );
 };

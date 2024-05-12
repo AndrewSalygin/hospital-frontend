@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from './pages/Login';
-import AdminLogin from './pages/AdminLogin'
-import Registration from './pages/Registration'
+import Login from './pages/Authorization/Login';
+import AdminLogin from './pages/Authorization/AdminLogin'
+import Registration from './pages/Authorization/Registration'
 import TablePage from './components/TablePage'
 import PatientDetails from './pages/Patients/PatientDetails'
 import EditPatient from './pages/Patients/EditPatient';
@@ -25,10 +25,6 @@ function App() {
     const newPatientId = patients.length ? Math.max(...patients.map(p => p.patientId)) + 1 : 1;
     
     setPatients([...patients, { ...newPatient, patientId: newPatientId }]);
-  };
-
-  const deletePatient = (patientId) => {
-    setPatients(patients.filter(p => p.patientId !== patientId));
   };
   
   return (
@@ -63,7 +59,7 @@ function App() {
             />
             } 
           /> */}
-          <Route path = "/patients/:patientId" element={<PatientDetails patients={patients} deletePatient={deletePatient} />} />
+          <Route path = "/patients/:patientId" element={<PatientDetails patients={patients} />} />
           <Route path="/patients/:patientId/edit" element={<EditPatient patients={patients} updatePatient={updatePatient} />} />
         </Routes>
       </BrowserRouter>

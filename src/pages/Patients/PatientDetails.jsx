@@ -1,11 +1,10 @@
 import React from 'react';
-import { useParams, useNavigate, Link  } from 'react-router-dom';
+import { useParams, Link  } from 'react-router-dom';
 import { Card, Alert, Container, Button } from 'react-bootstrap';
 
-const PatientDetails = ({ patients, deletePatient }) => {
+const PatientDetails = ({ patients }) => {
   const { patientId } = useParams();
   const patient = patients.find(p => p.patientId.toString() === patientId);
-  const navigate = useNavigate();
 
   if (!patient) {
     return (
@@ -17,11 +16,6 @@ const PatientDetails = ({ patients, deletePatient }) => {
         </Container>
     );
   }
-
-  const handleDelete = () => {
-    deletePatient(Number(patientId));
-    navigate('/patients');
-  };
 
   return (
     <Container className="mt-5 mb-5 d-flex justify-content-center">
@@ -63,13 +57,6 @@ const PatientDetails = ({ patients, deletePatient }) => {
               className="px-4 py-2 rounded-pill"
             >
               Вернуться
-            </Button>
-            <Button
-              variant="danger"
-              className="px-4 py-2 rounded-pill"
-              onClick={handleDelete}
-            >
-              Удалить пациента
             </Button>
           </div>
         </Card.Body>

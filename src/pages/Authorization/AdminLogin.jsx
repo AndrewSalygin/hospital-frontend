@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Card, Form, Container } from 'react-bootstrap';
-import { BlackFormControl } from '../styles/BlackForm.js';
+import { BlackFormControl } from '../../styles/BlackForm.js';
 
 export const AdminLogin = () => {
   return (

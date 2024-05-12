@@ -1,8 +1,8 @@
 import React from "react";
 import { Button, Card, Form, Container } from 'react-bootstrap';
-import { GreenFormCheck, GreenLink, GreenFormControl } from '../styles/GreenForm.js';
+import { GreenLink, GreenFormControl } from '../../styles/GreenForm.js';
 
-export const Registration = () => {
+export const Login = () => {
   return (
     <Container
       fluid
@@ -10,7 +10,7 @@ export const Registration = () => {
       style={{ backgroundColor: "#f8f9fa" }}
     >
       <Card className="p-4 shadow" style={{ maxWidth: "400px", width: "100%" }}>
-        <h3 className="text-center mb-4">Регистрация</h3>
+        <h3 className="text-center mb-4">Авторизация</h3>
         <Form>
           <Form.Group className="mb-3" controlId="email">
             <Form.Label>Email</Form.Label>
@@ -26,17 +26,11 @@ export const Registration = () => {
               placeholder="Введите пароль"
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="isDoctor">
-            <GreenFormCheck
-            type="checkbox"
-            label="Вы врач?"
-            />
-          </Form.Group>
           <Button variant="success" type="submit" className="mb-3">
-            Зарегистрироваться
+            Войти
           </Button>
           <div className="text-center">
-            <GreenLink to="/login">Авторизация</GreenLink>
+            <GreenLink to="/register">Зарегистрироваться</GreenLink>
           </div>
         </Form>
       </Card>
@@ -44,4 +38,4 @@ export const Registration = () => {
   );
 };
 
-export default Registration;
+export default Login;
