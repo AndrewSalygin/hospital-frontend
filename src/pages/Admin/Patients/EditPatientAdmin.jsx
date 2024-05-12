@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Form, Button, Card, Alert, Container } from 'react-bootstrap';
-import EditPatientFormComponent from '../../components/Patients/EditPatientFormComponent.jsx';
+import { GreenFormCheck, GreenFormControl } from '../../../styles/GreenForm.js';
+import EditPatientFormComponent from '../../../components/Patients/EditPatientFormComponent.jsx';
 
-const EditPatient = ({ patients, updatePatient }) => {
+const EditPatientAdmin = ({ patients, updatePatient }) => {
   const { patientId } = useParams();
   const navigate = useNavigate();
 
@@ -42,7 +43,7 @@ const EditPatient = ({ patients, updatePatient }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     updatePatient(formData); // Pass updated data to the handler function
-    navigate(`/patients/${patientId}`); // Redirect to the patient's details page
+    navigate(`/admin/patients/${patientId}`); // Redirect to the patient's details page
   };
 
   return (
@@ -60,7 +61,7 @@ const EditPatient = ({ patients, updatePatient }) => {
               />
             <div className="d-flex justify-content-between">
               <Button variant="success" type="submit" className="px-4 py-2 rounded-pill">Сохранить изменения</Button>
-              <Button variant="secondary" as={Link} to={`/patients/${patientId}`} className="px-4 py-2 rounded-pill">Вернуться</Button>
+              <Button variant="secondary" as={Link} to={`/admin/patients/${patientId}`} className="px-4 py-2 rounded-pill">Вернуться</Button>
             </div>
           </Form>
         </Card.Body>
@@ -69,4 +70,4 @@ const EditPatient = ({ patients, updatePatient }) => {
   );
 };
 
-export default EditPatient;
+export default EditPatientAdmin;

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Form, Button, Card, Container } from 'react-bootstrap';
-import AddPatientFormComponent from '../../components/Patients/AddPatientFormComponent';
+import AddPatientFormComponent from '../../../components/Patients/AddPatientFormComponent.jsx';
 
-const AddPatient = ({ addPatient }) => {
+const AddPatientAdmin = ({ addPatient }) => {
   const navigate = useNavigate();
 
   // Initialize the form state with default empty values
@@ -29,7 +29,7 @@ const AddPatient = ({ addPatient }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     addPatient(formData); // Call the add patient handler
-    navigate('/patients'); // Redirect to the patients list page
+    navigate('/admin/patients'); // Redirect to the patients list page
   };
 
   return (
@@ -47,7 +47,7 @@ const AddPatient = ({ addPatient }) => {
             />
             <div className="d-flex justify-content-between">
               <Button variant="success" type="submit" className="px-4 py-2 rounded-pill">Добавить пациента</Button>
-              <Button variant="secondary" as={Link} to="/patients" className="px-4 py-2 rounded-pill">Вернуться</Button>
+              <Button variant="secondary" as={Link} to="/admin/patients" className="px-4 py-2 rounded-pill">Вернуться</Button>
             </div>
           </Form>
         </Card.Body>
@@ -56,4 +56,4 @@ const AddPatient = ({ addPatient }) => {
   );
 };
 
-export default AddPatient;
+export default AddPatientAdmin;

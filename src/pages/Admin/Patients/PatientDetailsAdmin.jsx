@@ -1,9 +1,9 @@
 import React from 'react';
 import { useParams, Link  } from 'react-router-dom';
 import { Card, Alert, Container, Button } from 'react-bootstrap';
-import PatientDetailsComponent from '../../components/Patients/PatientDetailsComponent';
+import PatientDetailsComponent from '../../../components/Patients/PatientDetailsComponent';
 
-const PatientDetails = ({ patients }) => {
+const PatientDetailsAdmin = ({ patients }) => {
   const { patientId } = useParams();
   const patient = patients.find(p => p.patientId.toString() === patientId);
 
@@ -25,12 +25,11 @@ const PatientDetails = ({ patients }) => {
             patient= { patient }
           />
           <Card.Body className="p-5 pt-0">
-          {/* Edit and Back buttons */}
           <div className="d-flex justify-content-between">
             <Button
               variant="success"
               as={Link}
-              to={`/patients/${patientId}/edit`}
+              to={`/admin/patients/${patientId}/edit`}
               className="px-4 py-2 rounded-pill"
             >
               Изменить информацию
@@ -38,7 +37,7 @@ const PatientDetails = ({ patients }) => {
             <Button
               variant="secondary"
               as={Link}
-              to="/patients"
+              to="/admin/patients"
               className="px-4 py-2 rounded-pill"
             >
               Вернуться
@@ -50,4 +49,4 @@ const PatientDetails = ({ patients }) => {
   );
 };
 
-export default PatientDetails;
+export default PatientDetailsAdmin;

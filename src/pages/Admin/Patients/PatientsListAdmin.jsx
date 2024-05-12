@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Form, Pagination } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import '../styles/greenPagination.css'
+import { Table, Form, Pagination, Button } from 'react-bootstrap';
+import { useNavigate, Link } from 'react-router-dom';
+import '../../../styles/greenPagination.css';
 
-const PatientsList = ({ patients }) => {
+const PatientsListAdmin = ({ patients, deletePatient, buttonName, buttonLink }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPatients, setFilteredPatients] = useState(patients);
   const [currentPage, setCurrentPage] = useState(1);
   const patientsPerPage = 3;
-  const visiblePages = 5; // Number of pages to display
+  const visiblePages = 5;
 
+  // Update filtered patients based on search term
   useEffect(() => {
     const lowercasedTerm = searchTerm.toLowerCase();
     setFilteredPatients(
       patients.filter((patient) =>
-        Object.values(patient)
-          .join(' ')
-          .toLowerCase()
-          .includes(lowercasedTerm)
+        Object.values(patient).join(' ').toLowerCase().includes(lowercasedTerm)
       )
     );
   }, [searchTerm, patients]);
@@ -31,10 +29,12 @@ const PatientsList = ({ patients }) => {
 
   const navigate = useNavigate();
 
+  // Navigate to patient details on row click
   const handleRowClick = (patientId) => {
-    navigate(`/patients/${patientId}`);
+    navigate(`/admin/patients/${patientId}`);
   };
 
+  // Pagination controls
   const goToPreviousPage = () => {
     if (currentPage > 1) handlePageChange(currentPage - 1);
   };
@@ -65,8 +65,14 @@ const PatientsList = ({ patients }) => {
     );
   }
 
+  // Button click handler for deleting a patient
+  const handleDelete = (patientId) => {
+    deletePatient(patientId);
+  };
+
   return (
     <div className="container mt-3">
+      {/* Search Bar */}
       <Form.Control
         type="text"
         placeholder="Поиск по любому полю..."
@@ -75,6 +81,7 @@ const PatientsList = ({ patients }) => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
+      {/* Patients Table */}
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -84,26 +91,41 @@ const PatientsList = ({ patients }) => {
             <th>Отчество</th>
             <th>Пол</th>
             <th>Дата рождения</th>
+            <th>Действия</th>
           </tr>
         </thead>
         <tbody>
           {currentPatients.map((patient, index) => (
-            <tr
-              key={patient.patientId}
-              onClick={() => handleRowClick(patient.patientId)}
-              style={{ cursor: 'pointer' }}
-            >
-              <td>{indexOfFirstPatient + index + 1}</td>
-              <td>{patient.lastName}</td>
-              <td>{patient.firstName}</td>
-              <td>{patient.middleName}</td>
-              <td>{patient.gender}</td>
-              <td>{patient.dateOfBirth}</td>
+            <tr key={patient.patientId}>
+              <td onClick={() => handleRowClick(patient.patientId)} style={{ cursor: 'pointer' }}>
+                {indexOfFirstPatient + index + 1}
+              </td>
+              <td onClick={() => handleRowClick(patient.patientId)} style={{ cursor: 'pointer' }}>
+                {patient.lastName}
+              </td>
+              <td onClick={() => handleRowClick(patient.patientId)} style={{ cursor: 'pointer' }}>
+                {patient.firstName}
+              </td>
+              <td onClick={() => handleRowClick(patient.patientId)} style={{ cursor: 'pointer' }}>
+                {patient.middleName}
+              </td>
+              <td onClick={() => handleRowClick(patient.patientId)} style={{ cursor: 'pointer' }}>
+                {patient.gender}
+              </td>
+              <td onClick={() => handleRowClick(patient.patientId)} style={{ cursor: 'pointer' }}>
+                {patient.dateOfBirth}
+              </td>
+              <td>
+                <Button variant="danger" size="sm" onClick={() => handleDelete(patient.patientId)}>
+                  Удалить
+                </Button>
+              </td>
             </tr>
           ))}
         </tbody>
       </Table>
 
+      {/* Pagination Component */}
       <Pagination className="pagination-success mt-3">
         <Pagination.Prev onClick={goToPreviousPage} disabled={currentPage === 1}>
           Назад
@@ -113,8 +135,17 @@ const PatientsList = ({ patients }) => {
           Вперёд
         </Pagination.Next>
       </Pagination>
+
+      {/* Add Patient Button */}
+      <div className="col text-center">
+        <Link to={buttonLink} style={{ textDecoration: 'none' }}>
+          <Button variant="success" className="mt-3 mb-3">
+            {buttonName}
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 };
 
-export default PatientsList;
+export default PatientsListAdmin;

@@ -11,8 +11,13 @@ import EditPatient from './pages/Patients/EditPatient';
 
 import { patients as initialPatients } from './fakeData/Patients';
 
-import PatientsList from './components/PatientList';
+import PatientsList from './pages/Patients/PatientsList';
+import PatientsListAdmin from './pages/Admin/Patients/PatientsListAdmin';
 import AddPatient from './pages/Patients/AddPatient';
+
+import AddPatientAdmin from './pages/Admin/Patients/AddPatientAdmin'
+import EditPatientAdmin from './pages/Admin/Patients/EditPatientAdmin'
+import PatientDetailsAdmin from './pages/Admin/Patients/PatientDetailsAdmin'
 
 function App() {
   const [patients, setPatients] = useState(initialPatients);
@@ -27,13 +32,17 @@ function App() {
     setPatients([...patients, { ...newPatient, patientId: newPatientId }]);
   };
   
+  const deletePatient = (patientId) => {
+    setPatients(patients.filter(p => p.patientId !== patientId));
+  };
+
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path = "/login" element={<Login/>} />
           <Route path = "/register" element={<Registration/>} />
-          <Route path = "/admin-login" element={<AdminLogin/>} />
+          <Route path = "/admin/login" element={<AdminLogin/>} />
           <Route 
             path = "/patients"
             element={
@@ -46,6 +55,7 @@ function App() {
             />
             } 
           />
+          <Route path = "/admin/new-patient" element={<AddPatientAdmin addPatient={addPatient}/>} />
           <Route path = "/new-patient" element={<AddPatient addPatient={addPatient}/>} />
           {/*<Route 
             path = "/doctors"
@@ -59,6 +69,21 @@ function App() {
             />
             } 
           /> */}
+          <Route 
+            path = "/admin/patients"
+            element={
+            <TablePage 
+              patients={patients} 
+              titleName="Список пациентов" 
+              buttonName="Добавить нового пациента" 
+              buttonLink="/admin/new-patient" 
+              deletePatient={deletePatient}
+              ListComponent={PatientsListAdmin}  
+            />
+            } 
+          />
+          <Route path = "/admin/patients/:patientId" element={<PatientDetailsAdmin patients={patients} />} />
+          <Route path="/admin/patients/:patientId/edit" element={<EditPatientAdmin patients={patients} updatePatient={updatePatient} />} />
           <Route path = "/patients/:patientId" element={<PatientDetails patients={patients} />} />
           <Route path="/patients/:patientId/edit" element={<EditPatient patients={patients} updatePatient={updatePatient} />} />
         </Routes>
