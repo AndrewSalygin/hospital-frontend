@@ -1,0 +1,36 @@
+:root {
+  --bs-btn-active-border-color: #13653f;
+  --bs-btn-hover-border-color: #146c43;
+  --bs-btn-bg: #198754;
+}
+
+/* Pagination button styles */
+.page-link {
+  background-color: var(--bs-btn-bg);
+  border-color: var(--bs-btn-bg);
+  color: #fff;
+}
+
+/* Hover state */
+.page-link:hover {
+  background-color: var(--bs-btn-hover-border-color);
+  border-color: var(--bs-btn-hover-border-color);
+  color: #fff;
+}
+
+/* Active state */
+.page-link:active, .page-link:focus {
+  background-color: var(--bs-btn-active-border-color);
+  border-color: var(--bs-btn-active-border-color);
+  color: #fff;
+  outline: none;
+  border-radius: 1px;
+  box-shadow: 0 0 0 0.2rem rgba(19, 101, 63, 0.5); /* Adjust the glow effect */
+}
+
+/* Active pagination item (current page) */
+.page-item.active .page-link {
+  background-color: var(--bs-btn-active-border-color);
+  border-color: var(--bs-btn-active-border-color);
+  color: #fff;
+}

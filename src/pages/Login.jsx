@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Card, Form, Container } from 'react-bootstrap';
-import { BlackLink, BlackFormControl } from '../styles/BlackForm.js';
+import { GreenLink, GreenFormControl } from '../styles/GreenForm.js';
 
 export const Login = () => {
   return (
@@ -14,23 +14,23 @@ export const Login = () => {
         <Form>
           <Form.Group className="mb-3" controlId="email">
             <Form.Label>Email</Form.Label>
-            <BlackFormControl
+            <GreenFormControl
               type="email"
               placeholder="Введите email"
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="password">
             <Form.Label>Пароль</Form.Label>
-            <BlackFormControl
+            <GreenFormControl
               type="password"
               placeholder="Введите пароль"
             />
           </Form.Group>
-          <Button variant="dark" type="submit" className="mb-3">
+          <Button variant="success" type="submit" className="mb-3">
             Войти
           </Button>
           <div className="text-center">
-            <BlackLink to="/register">Зарегистрироваться</BlackLink>
+            <GreenLink to="/register">Зарегистрироваться</GreenLink>
           </div>
         </Form>
       </Card>
