@@ -92,7 +92,7 @@ const EditPatientFormComponent = ({ formData, handleChange, handleGenderChange }
             <GreenFormControl
             type="text"
             name="insuranceInfo"
-            value={formData.insuranceInfo}
+            value={formData.insuranceInformation}
             onChange={handleChange}
             required
             className="form-control-lg rounded-pill"

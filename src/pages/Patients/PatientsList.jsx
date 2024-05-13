@@ -1,24 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Form, Pagination, Button } from 'react-bootstrap';
 import { useNavigate, Link } from 'react-router-dom';
+import { getPatients } from '../../api/Patients';
 import '../../styles/greenPagination.css'
 
-const PatientsList = ({ patients, buttonName, buttonLink }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+const PatientsList = ({ patients, setPatients, buttonName, buttonLink }) => {
+  const [searchTerms, setSearchTerms] = useState({
+    lastName: '',
+    firstName: '',
+    middleName: '',
+    dateOfBirth: ''
+  });
   const [filteredPatients, setFilteredPatients] = useState(patients);
   const [currentPage, setCurrentPage] = useState(1);
   const patientsPerPage = 5;
   const visiblePages = 5; // Number of pages to display
 
   useEffect(() => {
-    const lowercasedTerm = searchTerm.toLowerCase();
-    const visiblePatients = patients.filter(
-      (patient) =>
-        !patient.isDeleted &&
-        Object.values(patient).join(' ').toLowerCase().includes(lowercasedTerm)
+    const visiblePatients = patients.filter((patient) =>
+      !patient.isDeleted &&
+      Object.keys(searchTerms).every((key) =>
+        searchTerms[key] === '' || 
+        (patient[key] && patient[key].toString().toLowerCase().includes(searchTerms[key].toLowerCase()))
+      )
     );
     setFilteredPatients(visiblePatients);
-  }, [searchTerm, patients]);
+  }, [searchTerms, patients]);
+
+  const handleSearchChange = (e) => {
+    const { name, value } = e.target;
+    setSearchTerms((prevTerms) => ({
+      ...prevTerms,
+      [name]: value
+    }));
+  };
 
   const indexOfLastPatient = currentPage * patientsPerPage;
   const indexOfFirstPatient = indexOfLastPatient - patientsPerPage;
@@ -63,15 +78,55 @@ const PatientsList = ({ patients, buttonName, buttonLink }) => {
     );
   }
 
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+        const data = await getPatients(-1, 0);
+        setPatients(data);
+      } catch (error) {
+        console.error("Failed to fetch patients:", error);
+      }
+    };
+
+    fetchPatients();
+  }, []);
+
   return (
     <div className="container mt-3">
-      <Form.Control
-        type="text"
-        placeholder="Поиск по любому полю..."
-        className="mb-3"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
+      <Form className="mb-3">
+        <Form.Control
+          type="text"
+          placeholder="Поиск по фамилии..."
+          name="lastName"
+          value={searchTerms.lastName}
+          onChange={handleSearchChange}
+          className="mb-2"
+        />
+        <Form.Control
+          type="text"
+          placeholder="Поиск по имени..."
+          name="firstName"
+          value={searchTerms.firstName}
+          onChange={handleSearchChange}
+          className="mb-2"
+        />
+        <Form.Control
+          type="text"
+          placeholder="Поиск по отчеству..."
+          name="middleName"
+          value={searchTerms.middleName}
+          onChange={handleSearchChange}
+          className="mb-2"
+        />
+        <Form.Control
+          type="text"
+          placeholder="Поиск по дате рождения..."
+          name="dateOfBirth"
+          value={searchTerms.dateOfBirth}
+          onChange={handleSearchChange}
+          className="mb-2"
+        />
+      </Form>
 
       <Table striped bordered hover>
         <thead>
@@ -112,9 +167,9 @@ const PatientsList = ({ patients, buttonName, buttonLink }) => {
         </Pagination.Next>
       </Pagination>
       <div className="col text-center">
-        <Link to={ buttonLink } style={{ textDecoration: 'none' }}>
+        <Link to={buttonLink} style={{ textDecoration: 'none' }}>
           <Button variant="success" className="mt-3 mb-3">
-            { buttonName }
+            {buttonName}
           </Button>
         </Link>
       </div>

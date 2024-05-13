@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Form, Button, Card, Container } from 'react-bootstrap';
+import { Form, Button, Card, Container, Alert } from 'react-bootstrap';
 import AddPatientFormComponent from '../../components/Patients/AddPatientFormComponent';
+import { addPatient } from '../../api/Patients';
 
-const AddPatient = ({ addPatient }) => {
+const AddPatient = () => {
   const navigate = useNavigate();
 
-  // Initialize the form state with default empty values
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -14,8 +14,10 @@ const AddPatient = ({ addPatient }) => {
     gender: '',
     dateOfBirth: '',
     phoneNumber: '',
-    insuranceInfo: ''
+    insuranceInformation: ''
   });
+
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,10 +28,15 @@ const AddPatient = ({ addPatient }) => {
     setFormData({ ...formData, gender: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addPatient(formData); // Call the add patient handler
-    navigate('/patients'); // Redirect to the patients list page
+    try {
+      await addPatient(formData);
+      navigate('/patients');
+    } catch (error) {
+      console.error('Ошибка при добавлении пациента:', error);
+      setError('Ошибка при создании пациента. Попробуйте еще раз.');
+    }
   };
 
   return (
@@ -39,6 +46,11 @@ const AddPatient = ({ addPatient }) => {
           <h2 className="m-0">Добавить нового пациента</h2>
         </Card.Header>
         <Card.Body className="p-5">
+          {error && (
+            <Alert variant="danger">
+              {error}
+            </Alert>
+          )}
           <Form onSubmit={handleSubmit}>
             <AddPatientFormComponent
               formData={formData}

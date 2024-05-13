@@ -21,7 +21,7 @@ const PatientDetailsComponent = ({ patient }) => {
             <strong>Номер телефона:</strong> {patient.phoneNumber}
           </Card.Text>
           <Card.Text className="mb-4" style={{ fontSize: '1.3rem' }}>
-            <strong>Информация по страховке:</strong> {patient.insuranceInfo}
+            <strong>Информация по страховке:</strong> {patient.insuranceInformation}
           </Card.Text>
         </Card.Body>
     </>

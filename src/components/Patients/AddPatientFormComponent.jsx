@@ -91,8 +91,8 @@ const AddPatientFormComponent = ({ formData, handleChange, handleGenderChange })
         <Form.Label>Информация по страховке</Form.Label>
         <GreenFormControl
           type="text"
-          name="insuranceInfo"
-          value={formData.insuranceInfo}
+          name="insuranceInformation"
+          value={formData.insuranceInformation}
           onChange={handleChange}
           required
           className="form-control-lg rounded-pill"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -19,19 +19,21 @@ import PatientDetailsAdmin from './pages/Admin/Patients/PatientDetailsAdmin'
 import TrashPatientsListAdmin from './pages/Admin/Patients/TrashPatientsListAdmin';
 import UsersListAdmin from './pages/Admin/Users/UsersListAdmin';
 
-import { patients as initialPatients } from './fakeData/Patients';
+import { PatientProvider } from './context/PatientContext';
+
 import { users as initialUsers } from './fakeData/Users';
 
-import { updatePatient, addPatient, deletePatient, deleteForeverPatient, unDeletePatient } from './scripts/PatientsScripts'
+import { deletePatient, deleteForeverPatient, unDeletePatient } from './scripts/PatientsScripts'
 import { deleteForeverUser, changeRights } from './scripts/UsersScripts';
 
 function App() {
-const [patients, setPatients] = useState(initialPatients);
-const [users, setUsers] = useState(initialUsers);
+  const [patients, setPatients] = useState([]);
+  const [users, setUsers] = useState(initialUsers);
 
   return (
     <>
       <BrowserRouter>
+        <PatientProvider>
         <Routes>
           <Route path = "/login" element={<Login/>} />
           <Route path = "/register" element={<Registration/>} />
@@ -52,7 +54,8 @@ const [users, setUsers] = useState(initialUsers);
             path = "/patients"
             element={
             <TablePage 
-              patients={patients} 
+              patients={patients}
+              setPatients = {setPatients}
               titleName="Список пациентов" 
               buttonName="Добавить нового пациента" 
               buttonLink="/new-patient" 
@@ -60,8 +63,8 @@ const [users, setUsers] = useState(initialUsers);
             />
             } 
           />
-          <Route path = "/admin/new-patient" element={<AddPatientAdmin addPatient={(newPatient) => addPatient(patients, setPatients, newPatient)}/>} />
-          <Route path = "/new-patient" element={<AddPatient addPatient={(newPatient) => addPatient(patients, setPatients, newPatient)}/>} />
+          <Route path = "/admin/new-patient" element={<AddPatientAdmin />} />
+          <Route path = "/new-patient" element={<AddPatient />} />
           {/*<Route 
             path = "/doctors"
             element={
@@ -99,11 +102,12 @@ const [users, setUsers] = useState(initialUsers);
             />
             } 
           />
-          <Route path = "/admin/patients/:patientId" element={<PatientDetailsAdmin patients={patients} />} />
-          <Route path="/admin/patients/:patientId/edit" element={<EditPatientAdmin patients={patients} updatePatient={(updatedPatient) => updatePatient(patients, setPatients, updatedPatient)} />} />
-          <Route path = "/patients/:patientId" element={<PatientDetails patients={patients} />} />
-          <Route path="/patients/:patientId/edit" element={<EditPatient patients={patients} updatePatient={(updatedPatient) => updatePatient(patients, setPatients, updatedPatient)} />} />
-        </Routes>
+          <Route path = "/admin/patients/:patientId" element={<PatientDetailsAdmin />} />
+          <Route path="/admin/patients/:patientId/edit" element={<EditPatientAdmin />} />
+          <Route path = "/patients/:patientId" element={<PatientDetails />} />
+          <Route path="/patients/:patientId/edit" element={<EditPatient />} />
+          </Routes>
+        </PatientProvider>
       </BrowserRouter>
     </>
   );
