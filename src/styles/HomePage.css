@@ -1,0 +1,24 @@
+.home-page-container {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .home-page-title {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .home-page-text {
+    font-size: 1.25rem;
+    margin-bottom: 40px;
+  }
+  
+  .home-page-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .home-page-button {
+    width: 200px;
+  }

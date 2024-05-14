@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pagination } from 'react-bootstrap';
+import '../../styles/PaginationComponent.css';
 
 const PaginationComponent = ({ currentPage, totalPages, handlePageChange }) => {
   const visiblePages = 5;
@@ -24,15 +25,17 @@ const PaginationComponent = ({ currentPage, totalPages, handlePageChange }) => {
   }
 
   return (
-    <Pagination className="pagination-success mt-3">
-      <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
-        Назад
-      </Pagination.Prev>
-      {pages}
-      <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-        Вперёд
-      </Pagination.Next>
-    </Pagination>
+    <div className="pagination-wrapper">
+      <Pagination className="pagination-success mt-3">
+        <Pagination.Prev onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+          Назад
+        </Pagination.Prev>
+        {pages}
+        <Pagination.Next onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+          Вперёд
+        </Pagination.Next>
+      </Pagination>
+    </div>
   );
 };
 

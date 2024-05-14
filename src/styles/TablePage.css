@@ -1,0 +1,9 @@
+.table-page-title {
+    text-align: left; /* Выравнивание по левому краю по умолчанию */
+  }
+  
+  @media (max-width: 1200px) {
+    .table-page-title {
+      text-align: center; /* Центрирование на мобильных устройствах */
+    }
+  }
