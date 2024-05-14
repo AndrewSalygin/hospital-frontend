@@ -1,9 +1,10 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import { GreenFormControl } from '../../styles/GreenForm';
 
 const PatientSearchForm = ({ searchTerms, handleSearchChange }) => (
   <Form className="mb-3">
-    <Form.Control
+    <GreenFormControl
       type="text"
       placeholder="Поиск по фамилии..."
       name="lastName"
@@ -11,7 +12,7 @@ const PatientSearchForm = ({ searchTerms, handleSearchChange }) => (
       onChange={handleSearchChange}
       className="mb-2"
     />
-    <Form.Control
+    <GreenFormControl
       type="text"
       placeholder="Поиск по имени..."
       name="firstName"
@@ -19,7 +20,7 @@ const PatientSearchForm = ({ searchTerms, handleSearchChange }) => (
       onChange={handleSearchChange}
       className="mb-2"
     />
-    <Form.Control
+    <GreenFormControl
       type="text"
       placeholder="Поиск по отчеству..."
       name="middleName"
@@ -27,7 +28,7 @@ const PatientSearchForm = ({ searchTerms, handleSearchChange }) => (
       onChange={handleSearchChange}
       className="mb-2"
     />
-    <Form.Control
+    <GreenFormControl
       type="text"
       placeholder="Поиск по дате рождения..."
       name="dateOfBirth"
