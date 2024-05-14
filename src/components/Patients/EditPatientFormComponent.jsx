@@ -91,7 +91,7 @@ const EditPatientFormComponent = ({ formData, handleChange, handleGenderChange }
             <Form.Label>Информация по страховке</Form.Label>
             <GreenFormControl
             type="text"
-            name="insuranceInfo"
+            name="insuranceInformation"
             value={formData.insuranceInformation}
             onChange={handleChange}
             required

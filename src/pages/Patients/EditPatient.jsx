@@ -1,73 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Form, Button, Card, Alert, Container, Spinner } from 'react-bootstrap';
+import { Form, Button, Card, Container, Alert } from 'react-bootstrap';
 import EditPatientFormComponent from '../../components/Patients/EditPatientFormComponent.jsx';
 import { usePatient } from '../../context/PatientContext';
-import { updatePatient } from '../../api/Patients';
+import usePatientData from '../../hooks/usePatientData';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import ErrorAlert from '../../components/ErrorAlert';
 
 const EditPatient = () => {
   const { patientId } = useParams();
   const navigate = useNavigate();
   const { patient, setPatient } = usePatient();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [formData, setFormData] = useState({
-    patientId: '',
-    firstName: '',
-    lastName: '',
-    middleName: '',
-    gender: '',
-    dateOfBirth: '',
-    phoneNumber: '',
-    insuranceInfo: ''
-  });
-
-  useEffect(() => {
-    if (patient) {
-      setFormData({ ...patient });
-      setLoading(false);
-    } else {
-      setLoading(false);
-    }
-  }, [patient]);
+  const {
+    formData,
+    loading,
+    error,
+    handleChange,
+    handleGenderChange,
+    handleSubmit
+  } = usePatientData(patientId, setPatient);
 
   if (loading) {
-    return (
-      <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
-        <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
-      </Container>
-    );
+    return <LoadingSpinner />;
   }
 
-  if (!patient) {
-    return (
-      <Alert variant="danger" className="mt-4">
-        <h2>Ошибка: Пациент не найден</h2>
-      </Alert>
-    );
+  if (error) {
+    return <ErrorAlert message="Пожалуйста, проверьте идентификатор пациента или попробуйте еще раз." />;
   }
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleGenderChange = (e) => {
-    setFormData({ ...formData, gender: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const updatedPatient = await updatePatient(patientId, formData);
-      setPatient(updatedPatient);
-      navigate(`/patients/${patientId}`);
-    } catch (error) {
-      setError('Ошибка при обновлении данных пациента. Попробуйте еще раз.');
-    }
-  };
 
   return (
     <Container className="mt-5 mb-5 d-flex justify-content-center">
@@ -77,7 +36,7 @@ const EditPatient = () => {
         </Card.Header>
         <Card.Body className="p-5">
           {error && <Alert variant="danger">{error}</Alert>}
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={(e) => handleSubmit(e, navigate)}>
             <EditPatientFormComponent
               formData={formData}
               handleChange={handleChange}

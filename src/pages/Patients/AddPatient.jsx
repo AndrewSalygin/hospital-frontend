@@ -1,41 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Form, Button, Card, Container, Alert } from 'react-bootstrap';
 import AddPatientFormComponent from '../../components/Patients/AddPatientFormComponent';
-import { addPatient } from '../../api/Patients';
+import usePatientForm from '../../hooks/usePatientForm';
 
 const AddPatient = () => {
   const navigate = useNavigate();
+  const { formData, error, handleChange, handleGenderChange, handleSubmit } = usePatientForm();
 
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    middleName: '',
-    gender: '',
-    dateOfBirth: '',
-    phoneNumber: '',
-    insuranceInformation: ''
-  });
-
-  const [error, setError] = useState('');
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleGenderChange = (e) => {
-    setFormData({ ...formData, gender: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await addPatient(formData);
+    const success = await handleSubmit();
+    if (success) {
       navigate('/patients');
-    } catch (error) {
-      console.error('Ошибка при добавлении пациента:', error);
-      setError('Ошибка при создании пациента. Попробуйте еще раз.');
     }
   };
 
@@ -51,7 +28,7 @@ const AddPatient = () => {
               {error}
             </Alert>
           )}
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={onSubmit}>
             <AddPatientFormComponent
               formData={formData}
               handleChange={handleChange}

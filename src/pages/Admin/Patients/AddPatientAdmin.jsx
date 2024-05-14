@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Form, Button, Card, Container } from 'react-bootstrap';
-import AddPatientFormComponent from '../../../components/Patients/AddPatientFormComponent.jsx';
+import AddPatientFormComponent from '../../../components/Patients/AddPatientFormComponent';
 
 const AddPatientAdmin = ({ addPatient }) => {
   const navigate = useNavigate();
