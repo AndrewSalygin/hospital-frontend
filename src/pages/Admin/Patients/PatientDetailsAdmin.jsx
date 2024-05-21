@@ -1,30 +1,34 @@
 import React from 'react';
-import { useParams, Link  } from 'react-router-dom';
-import { Card, Alert, Container, Button } from 'react-bootstrap';
+import { useParams, Link } from 'react-router-dom';
+import { Card, Button, Container } from 'react-bootstrap';
 import PatientDetailsComponent from '../../../components/Patients/PatientDetailsComponent';
+import { usePatient } from '../../../context/PatientContext';
+import useFetchPatient from '../../../hooks/Patients/useFetchPatient';
+import LoadingSpinner from '../../../components/LoadingSpinner';
+import ErrorAlert from '../../../components/ErrorAlert';
 
-const PatientDetailsAdmin = ({ patients }) => {
+const PatientDetailsAdmin = () => {
   const { patientId } = useParams();
-  const patient = patients.find(p => p.patientId.toString() === patientId);
+  const { patient, setPatient } = usePatient();
+  const { loading, error } = useFetchPatient(patientId, setPatient);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return <ErrorAlert message="Пожалуйста, проверьте идентификатор пациента или попробуйте еще раз." />;
+  }
 
   if (!patient) {
-    return (
-        <Container>
-            <Alert variant="danger" className="mt-4">
-                <h2>Ошибка: Пациент не найден</h2>
-                <p>Пожалуйста, проверьте идентификатор пациента или попробуйте еще раз.</p>
-            </Alert>
-        </Container>
-    );
+    return <ErrorAlert message="Пожалуйста, проверьте идентификатор пациента или попробуйте еще раз." />;
   }
 
   return (
     <Container className="mt-5 mb-5 d-flex justify-content-center">
       <Card className="shadow-lg border-0 rounded-3" style={{ maxWidth: '700px', width: '100%' }}>
-          <PatientDetailsComponent
-            patient= { patient }
-          />
-          <Card.Body className="p-5 pt-0">
+        <PatientDetailsComponent patient={patient} />
+        <Card.Body className="p-5 pt-0">
           <div className="d-flex justify-content-between">
             <Button
               variant="success"

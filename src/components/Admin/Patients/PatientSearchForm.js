@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
-import { GreenFormControl } from './../../styles/GreenForm';
+import { GreenFormControl } from '../../../styles/GreenForm';
 
 const PatientSearchForm = ({ searchTerms, handleSearchChange }) => (
   <Form className="mb-3">

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getPatient } from '../api/Patients';
+import { getPatient } from '../../api/Patients';
 
 const useFetchPatient = (patientId, setPatient) => {
   const [loading, setLoading] = useState(true);

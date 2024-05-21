@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Form, Button, Card, Container, Alert } from 'react-bootstrap';
 import AddPatientFormComponent from '../../components/Patients/AddPatientFormComponent';
-import usePatientForm from '../../hooks/usePatientForm';
+import usePatientForm from '../../hooks/Patients/usePatientForm';
 
 const AddPatient = () => {
   const navigate = useNavigate();

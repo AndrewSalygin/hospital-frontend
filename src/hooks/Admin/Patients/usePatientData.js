@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getPatient, updatePatient } from '../api/Patients';
+import { getPatient, updatePatient } from '../../../api/Patients';
 
 const usePatientData = (patientId, setPatient) => {
   const [formData, setFormData] = useState({
@@ -10,7 +10,7 @@ const usePatientData = (patientId, setPatient) => {
     gender: '',
     dateOfBirth: '',
     phoneNumber: '',
-    insuranceInformation: ''
+    insuranceInfo: ''
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -23,33 +23,30 @@ const usePatientData = (patientId, setPatient) => {
         setPatient(patient);
         setLoading(false);
       } catch (error) {
-        setError(error.message);
+        setError('Failed to fetch patient data');
         setLoading(false);
       }
     };
 
-    if (patientId) {
-      fetchPatient();
-    }
+    fetchPatient();
   }, [patientId, setPatient]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({ ...prevState, [name]: value }));
+    setFormData(prevData => ({ ...prevData, [name]: value }));
   };
 
   const handleGenderChange = (e) => {
-    setFormData(prevState => ({ ...prevState, gender: e.target.value }));
+    setFormData(prevData => ({ ...prevData, gender: e.target.value }));
   };
 
   const handleSubmit = async (e, navigate) => {
     e.preventDefault();
     try {
-      const updatedPatient = await updatePatient(patientId, formData);
-      setPatient(updatedPatient);
-      navigate(`/patients/${patientId}`);
+      await updatePatient(patientId, formData);
+      navigate(`/admin/patients/${patientId}`);
     } catch (error) {
-      setError('Ошибка при обновлении данных пациента. Попробуйте еще раз.');
+      setError('Failed to update patient data');
     }
   };
 

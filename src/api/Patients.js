@@ -2,7 +2,7 @@ import axios from './axiosConfig';
 
 export const addPatient = async (patientData) => {
   try {
-    await axios.post(`/patients`, patientData);
+    await axios.post(`/admin-patients`, patientData);
   } catch (error) {
     console.error('Ошибка при добавлении пациента:', error);
     throw error;
@@ -11,7 +11,7 @@ export const addPatient = async (patientData) => {
 
 export const updatePatient = async (patientId, patientData) => {
   try {
-    const response = await axios.put(`/patients/${patientId}`, patientData);
+    const response = await axios.put(`/admin-patients/${patientId}`, patientData);
     return response.data;
   } catch (error) {
     console.error('Ошибка при обновлении данных пациента:', error);

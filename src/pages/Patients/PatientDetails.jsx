@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Card, Button, Container } from 'react-bootstrap';
 import PatientDetailsComponent from '../../components/Patients/PatientDetailsComponent';
 import { usePatient } from '../../context/PatientContext';
-import useFetchPatient from '../../hooks/useFetchPatient';
+import useFetchPatient from '../../hooks/Patients/useFetchPatient';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import ErrorAlert from '../../components/ErrorAlert';
 

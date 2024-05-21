@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Form, Button, Card, Container, Alert } from 'react-bootstrap';
 import EditPatientFormComponent from '../../components/Patients/EditPatientFormComponent.jsx';
 import { usePatient } from '../../context/PatientContext';
-import usePatientData from '../../hooks/usePatientData';
+import usePatientData from '../../hooks/Patients/usePatientData';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import ErrorAlert from '../../components/ErrorAlert';
 

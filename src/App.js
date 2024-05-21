@@ -3,7 +3,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { PatientProvider } from './context/PatientContext';
-import usePatients from './hooks/usePatients';
+import usePatients from './hooks/Patients/usePatients';
 import { routesConfig } from './routesConfig';
 import { users as initialUsers } from './fakeData/Users';
 import Layout from './components/Layout';
@@ -14,6 +14,28 @@ import HomePage from './pages/HomePage';
 import ForbiddenPage from './pages/ForbiddenPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthRedirectRoute from './components/AuthRedirectRoute';
+
+// const express = require('express');
+// const cors = require('cors');
+// const app = express();
+
+// // Enable CORS for all routes
+// app.use(cors());
+
+// // Alternatively, enable CORS for specific origins
+// // app.use(cors({
+// //   origin: 'http://localhost:3000'
+// // }));
+
+// // Your other routes and middleware
+// app.put('/admin-patients/detach/:patientId', (req, res) => {
+//   // Handle the request
+//   res.send({ message: 'Patient detached successfully' });
+// });
+
+// app.listen(8080, () => {
+//   console.log('Server is running on port 8080');
+// });
 
 const App = () => {
   const { patients, setPatients, handleDeletePatient, handleDeleteForeverPatient, handleUnDeletePatient } = usePatients();

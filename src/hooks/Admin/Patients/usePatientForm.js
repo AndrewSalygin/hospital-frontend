@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { addPatient } from '../api/Patients';
+import { addPatient } from '../../../api/Patients';
 
 const usePatientForm = () => {
   const [formData, setFormData] = useState({
@@ -9,18 +9,17 @@ const usePatientForm = () => {
     gender: '',
     dateOfBirth: '',
     phoneNumber: '',
-    insuranceInformation: ''
+    insuranceInfo: ''
   });
-
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleGenderChange = (e) => {
-    setFormData((prevData) => ({ ...prevData, gender: e.target.value }));
+    setFormData({ ...formData, gender: e.target.value });
   };
 
   const handleSubmit = async () => {
@@ -28,12 +27,18 @@ const usePatientForm = () => {
       await addPatient(formData);
       return true;
     } catch (error) {
-      setError('Ошибка при создании пациента. Попробуйте еще раз.');
+      setError('Не удалось добавить пациента. Попробуйте еще раз.');
       return false;
     }
   };
 
-  return { formData, error, handleChange, handleGenderChange, handleSubmit };
+  return {
+    formData,
+    error,
+    handleChange,
+    handleGenderChange,
+    handleSubmit
+  };
 };
 
 export default usePatientForm;

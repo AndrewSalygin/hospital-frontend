@@ -1,35 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Form, Button, Card, Container } from 'react-bootstrap';
+import { Form, Button, Card, Container, Alert } from 'react-bootstrap';
 import AddPatientFormComponent from '../../../components/Patients/AddPatientFormComponent';
+import usePatientForm from '../../../hooks/Admin/Patients/usePatientForm'; // Используем правильный хук
 
-const AddPatientAdmin = ({ addPatient }) => {
+const AddPatientAdmin = () => {
   const navigate = useNavigate();
+  const { formData, error, handleChange, handleGenderChange, handleSubmit } = usePatientForm();
 
-  // Initialize the form state with default empty values
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    middleName: '',
-    gender: '',
-    dateOfBirth: '',
-    phoneNumber: '',
-    insuranceInfo: ''
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleGenderChange = (e) => {
-    setFormData({ ...formData, gender: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    addPatient(formData); // Call the add patient handler
-    navigate('/admin/patients'); // Redirect to the patients list page
+    const success = await handleSubmit();
+    if (success) {
+      navigate('/admin/patients');
+    }
   };
 
   return (
@@ -39,7 +23,12 @@ const AddPatientAdmin = ({ addPatient }) => {
           <h2 className="m-0">Добавить нового пациента</h2>
         </Card.Header>
         <Card.Body className="p-5">
-          <Form onSubmit={handleSubmit}>
+          {error && (
+            <Alert variant="danger">
+              {error}
+            </Alert>
+          )}
+          <Form onSubmit={onSubmit}>
             <AddPatientFormComponent
               formData={formData}
               handleChange={handleChange}

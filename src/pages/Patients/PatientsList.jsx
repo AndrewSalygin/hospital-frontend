@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { useNavigate, Link } from 'react-router-dom';
-import usePatients from '../../hooks/usePatients';
+import usePatients from '../../hooks/Patients/usePatients';
 import PatientSearchForm from '../../components/Patients/PatientSearchForm';
 import PatientsTable from '../../components/Patients/PatientsTable';
 import PaginationComponent from '../../components/Patients/PaginationComponent';

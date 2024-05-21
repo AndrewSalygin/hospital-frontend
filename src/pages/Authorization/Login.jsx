@@ -33,7 +33,6 @@ export const Login = () => {
               const response = await axios.post('/auth/login', values);
               const token = response.data.jwtToken;
               const decoded = jwtDecode(token);
-              console.log(decoded)
               
               if (decoded.role === 'PATIENT' || decoded.role === 'DOCTOR') {
                 localStorage.setItem('token', token);
