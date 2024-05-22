@@ -44,7 +44,7 @@ instance.interceptors.response.use(
       const currentPath = window.location.pathname;
 
       // Исключения для страниц логина, регистрации, корневого пути и forbidden
-      const unprotectedPaths = ['/', '/login', '/register', '/forbidden'];
+      const unprotectedPaths = ['/', '/login', '/register', '/forbidden', '/admin/login'];
 
       if (unprotectedPaths.includes(currentPath)) {
         return Promise.reject(error);

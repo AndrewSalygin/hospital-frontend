@@ -3,11 +3,11 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Form, Button, Card, Container, Alert } from 'react-bootstrap';
 import EditPatientFormComponent from '../../components/Patients/EditPatientFormComponent.jsx';
 import { usePatient } from '../../context/PatientContext';
-import usePatientData from '../../hooks/Patients/usePatientData';
+import usePatientData from '../../hooks/usePatients.js';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import ErrorAlert from '../../components/ErrorAlert';
 
-const EditPatient = () => {
+const EditPatient = ({ isAdmin = false }) => {
   const { patientId } = useParams();
   const navigate = useNavigate();
   const { patient, setPatient } = usePatient();
@@ -18,7 +18,7 @@ const EditPatient = () => {
     handleChange,
     handleGenderChange,
     handleSubmit
-  } = usePatientData(patientId, setPatient);
+  } = usePatientData({ patientId, setPatient, isAdmin });
 
   if (loading) {
     return <LoadingSpinner />;
@@ -44,7 +44,7 @@ const EditPatient = () => {
             />
             <div className="d-flex justify-content-between">
               <Button variant="success" type="submit" className="px-4 py-2 rounded-pill">Сохранить изменения</Button>
-              <Button variant="secondary" as={Link} to={`/patients/${patientId}`} className="px-4 py-2 rounded-pill">Вернуться</Button>
+              <Button variant="secondary" as={Link} to={isAdmin ? `/admin/patients/${patientId}` : `/patients/${patientId}`} className="px-4 py-2 rounded-pill">Вернуться</Button>
             </div>
           </Form>
         </Card.Body>

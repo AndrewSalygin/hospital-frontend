@@ -3,14 +3,14 @@ import { useParams, Link } from 'react-router-dom';
 import { Card, Button, Container } from 'react-bootstrap';
 import PatientDetailsComponent from '../../components/Patients/PatientDetailsComponent';
 import { usePatient } from '../../context/PatientContext';
-import useFetchPatient from '../../hooks/Patients/useFetchPatient';
+import usePatientData from '../../hooks/usePatients';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import ErrorAlert from '../../components/ErrorAlert';
 
-const PatientDetails = () => {
+const PatientDetails = ({ isAdmin = false }) => {
   const { patientId } = useParams();
   const { patient, setPatient } = usePatient();
-  const { loading, error } = useFetchPatient(patientId, setPatient);
+  const { loading, error } = usePatientData({ patientId, setPatient });
 
   if (loading) {
     return <LoadingSpinner />;
@@ -21,7 +21,7 @@ const PatientDetails = () => {
   }
 
   if (!patient) {
-    return <ErrorAlert message="Пожалуйста, проверьте идентификатор пациента или попробуйте еще раз." />;
+    return <ErrorAlert message="Пациент не найден." />;
   }
 
   return (
@@ -33,7 +33,7 @@ const PatientDetails = () => {
             <Button
               variant="success"
               as={Link}
-              to={`/patients/${patientId}/edit`}
+              to={isAdmin ? `/admin/patients/${patientId}/edit` : `/patients/${patientId}/edit`}
               className="px-4 py-2 rounded-pill"
             >
               Изменить информацию
@@ -41,7 +41,7 @@ const PatientDetails = () => {
             <Button
               variant="secondary"
               as={Link}
-              to="/patients"
+              to={isAdmin ? "/admin/patients" : "/patients"}
               className="px-4 py-2 rounded-pill"
             >
               Вернуться

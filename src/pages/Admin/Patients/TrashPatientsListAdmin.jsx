@@ -1,10 +1,10 @@
 import React from 'react';
 import { Container, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import usePatients from '../../../hooks/Admin/TrashPatients/usePatients';
-import LoadingSpinner from './../../../components/LoadingSpinner';
+import usePatientData from '../../../hooks/usePatients';
+import LoadingSpinner from '../../../components/LoadingSpinner';
 import PatientSearchForm from '../../../components/Admin/Patients/PatientSearchForm';
-import PatientsTable from '../../../components/Admin/Patients/PatientsTable';
+import TrashPatientsTable from '../../../components/Patients/TrashPatientsTable';
 import PaginationComponent from '../../../components/Admin/Patients/PaginationComponent';
 import '../../../styles/greenPagination.css';
 
@@ -17,11 +17,10 @@ const TrashPatientsListAdmin = () => {
     currentPage,
     totalPages,
     setCurrentPage,
-    handleDeletePatient,
-    handleDeleteForeverPatient,
     handleUnDeletePatient,
-    loading
-  } = usePatients();
+    loading,
+    error
+  } = usePatientData({ showDeleted: true, isAdmin: true });
 
   const handleSearchChange = (e) => {
     const { name, value } = e.target;
@@ -46,15 +45,20 @@ const TrashPatientsListAdmin = () => {
         handleSearchChange={handleSearchChange}
       />
 
+      {error && (
+        <Alert variant="danger">
+          {error}
+        </Alert>
+      )}
+
       {patients.length === 0 ? (
         <Alert variant="info">Нет пациентов в архиве</Alert>
       ) : (
         <>
-          <PatientsTable
+          <TrashPatientsTable
             patients={patients}
             handleRowClick={handleRowClick}
             handleUnDelete={handleUnDeletePatient}
-            handleDelete={handleDeleteForeverPatient}
           />
           <PaginationComponent
             currentPage={currentPage}

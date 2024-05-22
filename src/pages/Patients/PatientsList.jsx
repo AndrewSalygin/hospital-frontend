@@ -1,20 +1,21 @@
 import React from 'react';
 import { Button, Container } from 'react-bootstrap';
 import { useNavigate, Link } from 'react-router-dom';
-import usePatients from '../../hooks/Patients/usePatients';
+import usePatients from '../../hooks/usePatients';
 import PatientSearchForm from '../../components/Patients/PatientSearchForm';
 import PatientsTable from '../../components/Patients/PatientsTable';
 import PaginationComponent from '../../components/Patients/PaginationComponent';
 import '../../styles/greenPagination.css';
 
-const PatientsList = ({ buttonName, buttonLink }) => {
+const PatientsList = ({ buttonName, buttonLink, isAdmin = false }) => {
   const {
     patients,
     searchTerms,
     setSearchTerms,
     currentPage,
     totalPages,
-    setCurrentPage
+    setCurrentPage,
+    handleDeletePatient
   } = usePatients();
 
   const navigate = useNavigate();
@@ -28,7 +29,13 @@ const PatientsList = ({ buttonName, buttonLink }) => {
   };
 
   const handleRowClick = (patientId) => {
-    navigate(`/patients/${patientId}`);
+    navigate(isAdmin ? `/admin/patients/${patientId}` : `/patients/${patientId}`);
+  };
+
+  const handleDelete = (patientId) => {
+    if (isAdmin) {
+      handleDeletePatient(patientId);
+    }
   };
 
   return (
@@ -37,7 +44,12 @@ const PatientsList = ({ buttonName, buttonLink }) => {
         searchTerms={searchTerms}
         handleSearchChange={handleSearchChange}
       />
-      <PatientsTable patients={patients} handleRowClick={handleRowClick} />
+      <PatientsTable
+        patients={patients}
+        handleRowClick={handleRowClick}
+        handleDelete={isAdmin ? handleDelete : null}
+        isAdmin={isAdmin}
+      />
       <PaginationComponent
         currentPage={currentPage}
         totalPages={totalPages}

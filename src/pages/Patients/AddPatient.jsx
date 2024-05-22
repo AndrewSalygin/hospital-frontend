@@ -2,17 +2,16 @@ import React from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Form, Button, Card, Container, Alert } from 'react-bootstrap';
 import AddPatientFormComponent from '../../components/Patients/AddPatientFormComponent';
-import usePatientForm from '../../hooks/Patients/usePatientForm';
+import usePatientData from '../../hooks/usePatients'; // Используем правильный хук
 
-const AddPatient = () => {
+const AddPatient = ({ isAdmin = false }) => {
   const navigate = useNavigate();
-  const { formData, error, handleChange, handleGenderChange, handleSubmit } = usePatientForm();
+  const { formData, error, handleChange, handleGenderChange, handleSubmit } = usePatientData({ isForm: true });
 
   const onSubmit = async (e) => {
-    e.preventDefault();
-    const success = await handleSubmit();
+    const success = await handleSubmit(e, navigate);
     if (success) {
-      navigate('/patients');
+      navigate(isAdmin ? '/admin/patients' : '/patients');
     }
   };
 
@@ -36,7 +35,7 @@ const AddPatient = () => {
             />
             <div className="d-flex justify-content-between">
               <Button variant="success" type="submit" className="px-4 py-2 rounded-pill">Добавить пациента</Button>
-              <Button variant="secondary" as={Link} to="/patients" className="px-4 py-2 rounded-pill">Вернуться</Button>
+              <Button variant="secondary" as={Link} to={isAdmin ? '/admin/patients' : '/patients'} className="px-4 py-2 rounded-pill">Вернуться</Button>
             </div>
           </Form>
         </Card.Body>
