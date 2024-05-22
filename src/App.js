@@ -10,7 +10,6 @@ import Login from './pages/Authorization/Login';
 import Registration from './pages/Authorization/Registration';
 import HomePage from './pages/UtilPages/HomePage';
 import ForbiddenPage from './pages/UtilPages/ForbiddenPage';
-import ProtectedRoute from './components/UtilComponents/ProtectedRoute';
 import AuthRedirectRoute from './components/UtilComponents/AuthRedirectRoute';
 import AdminLogin from './pages/Authorization/AdminLogin';
 
@@ -30,7 +29,7 @@ const App = () => {
             <Route index element={<HomePage />} />
 
             {routes.map((route, index) => (
-              <Route key={index} path={route.path} element={<ProtectedRoute element={route.element} />} />
+              <Route key={index} path={route.path} element={route.element} />
             ))}
 
             <Route path="*" element={<NotFound />} />
