@@ -8,6 +8,7 @@ import PatientDetails from './pages/Patients/PatientDetails';
 import EditPatient from './pages/Patients/EditPatient';
 import ProtectedRouteWithRole from './components/UtilComponents/ProtectedRouteWithRole';
 import NotFound from './pages/UtilPages/NotFound';
+import NewNote from './pages/Journal/NewNote';
 
 export const routesConfig = () => {
   return [
@@ -65,6 +66,8 @@ export const routesConfig = () => {
     { path: "/admin/patients/:patientId/edit", element: <ProtectedRouteWithRole element={<EditPatient isAdmin={true} />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} /> },
     { path: "/patients/:patientId", element: <ProtectedRouteWithRole element={<PatientDetails isAdmin={false} />} allowedRoles={["DOCTOR", "ADMIN", "SUPER-ADMIN"]} /> },
     { path: "/patients/:patientId/edit", element: <ProtectedRouteWithRole element={<EditPatient isAdmin={false} />} allowedRoles={["DOCTOR", "ADMIN", "SUPER-ADMIN"]} /> },
+    { path: "/admin/patients/:patientId/new-note", element: <ProtectedRouteWithRole element={<NewNote isAdmin={true} />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} /> },
+    { path: "/patients/:patientId/new-note", element: <ProtectedRouteWithRole element={<NewNote isAdmin={false} />} allowedRoles={["DOCTOR", "ADMIN", "SUPER-ADMIN"]} /> },
     { path: "*", element: <NotFound /> },
   ];
 };
