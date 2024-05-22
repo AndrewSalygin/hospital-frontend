@@ -11,6 +11,8 @@ const AuthRedirectRoute = ({ element }) => {
       return <Navigate to="/admin/patients" />;
     } else if (decoded.role === 'DOCTOR') {
       return <Navigate to="/patients" />;
+    } else if (decoded.role === 'SUPER-ADMIN') {
+      return <Navigate to="/super-admin/users" />;
     } else if (decoded.role === 'PATIENT') {
       return <Navigate to="/lichniy-kabinet" />;
     }

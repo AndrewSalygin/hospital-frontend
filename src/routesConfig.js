@@ -12,14 +12,14 @@ import NotFound from './pages/UtilPages/NotFound';
 export const routesConfig = () => {
   return [
     {
-      path: "/admin/users",
+      path: "/super-admin/users",
       element: (
         <ProtectedRouteWithRole element={
           <TablePage
             titleName="Список пользователей"
             ListComponent={UsersListAdmin}
           />
-        } allowedRoles={["ADMIN"]} />
+        } allowedRoles={["SUPER-ADMIN"]} />
       ),
     },
     {
@@ -32,11 +32,11 @@ export const routesConfig = () => {
             buttonLink="/new-patient"
             ListComponent={(props) => <PatientsList {...props} isAdmin={false} />}
           />
-        } allowedRoles={["DOCTOR", "ADMIN"]} />
+        } allowedRoles={["DOCTOR", "ADMIN", "SUPER-ADMIN"]} />
       ),
     },
-    { path: "/admin/new-patient", element: <ProtectedRouteWithRole element={<AddPatient isAdmin={true} />} allowedRoles={["ADMIN"]} /> },
-    { path: "/new-patient", element: <ProtectedRouteWithRole element={<AddPatient isAdmin={false} />} allowedRoles={["DOCTOR", "ADMIN"]} /> },
+    { path: "/admin/new-patient", element: <ProtectedRouteWithRole element={<AddPatient isAdmin={true} />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} /> },
+    { path: "/new-patient", element: <ProtectedRouteWithRole element={<AddPatient isAdmin={false} />} allowedRoles={["DOCTOR", "ADMIN", "SUPER-ADMIN"]} /> },
     {
       path: "/admin/patients",
       element: (
@@ -47,7 +47,7 @@ export const routesConfig = () => {
             buttonLink="/admin/new-patient"
             ListComponent={(props) => <PatientsList {...props} isAdmin={true} />}
           />
-        } allowedRoles={["ADMIN"]} />
+        } allowedRoles={["ADMIN", "SUPER-ADMIN"]} />
       ),
     },
     {
@@ -58,13 +58,13 @@ export const routesConfig = () => {
             titleName="Список пациентов в архиве"
             ListComponent={TrashPatientsListAdmin}
           />
-        } allowedRoles={["ADMIN"]} />
+        } allowedRoles={["ADMIN", "SUPER-ADMIN"]} />
       ),
     },
-    { path: "/admin/patients/:patientId", element: <ProtectedRouteWithRole element={<PatientDetails isAdmin={true} />} allowedRoles={["ADMIN"]} /> },
-    { path: "/admin/patients/:patientId/edit", element: <ProtectedRouteWithRole element={<EditPatient isAdmin={true} />} allowedRoles={["ADMIN"]} /> },
-    { path: "/patients/:patientId", element: <ProtectedRouteWithRole element={<PatientDetails isAdmin={false} />} allowedRoles={["DOCTOR", "ADMIN"]} /> },
-    { path: "/patients/:patientId/edit", element: <ProtectedRouteWithRole element={<EditPatient isAdmin={false} />} allowedRoles={["DOCTOR", "ADMIN"]} /> },
+    { path: "/admin/patients/:patientId", element: <ProtectedRouteWithRole element={<PatientDetails isAdmin={true} />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} /> },
+    { path: "/admin/patients/:patientId/edit", element: <ProtectedRouteWithRole element={<EditPatient isAdmin={true} />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} /> },
+    { path: "/patients/:patientId", element: <ProtectedRouteWithRole element={<PatientDetails isAdmin={false} />} allowedRoles={["DOCTOR", "ADMIN", "SUPER-ADMIN"]} /> },
+    { path: "/patients/:patientId/edit", element: <ProtectedRouteWithRole element={<EditPatient isAdmin={false} />} allowedRoles={["DOCTOR", "ADMIN", "SUPER-ADMIN"]} /> },
     { path: "*", element: <NotFound /> },
   ];
 };

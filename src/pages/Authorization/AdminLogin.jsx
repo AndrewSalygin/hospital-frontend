@@ -37,6 +37,9 @@ export const AdminLogin = () => {
               if (decoded.role === 'ADMIN') {
                 localStorage.setItem('token', token);
                 navigate('/admin/patients');
+              } else if (decoded.role === 'SUPER-ADMIN') {
+                localStorage.setItem('token', token);
+                navigate('/super-admin/users');
               } else {
                 setError('Недостаточно прав для доступа');
               }
