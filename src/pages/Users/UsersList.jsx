@@ -48,7 +48,7 @@ const UsersListAdmin = () => {
               <td>{user.email}</td>
               <td>{user.role}</td>
               <td>
-                {user.role !== 'ADMIN' && (
+                {user.role !== 'ADMIN' && user.role !== 'SUPER-ADMIN' && (
                   <Button
                     variant="success"
                     size="sm"
@@ -58,7 +58,7 @@ const UsersListAdmin = () => {
                     Сделать админом
                   </Button>
                 )}
-                {user.role !== 'DOCTOR' && (
+                {user.role !== 'DOCTOR' && user.role !== 'SUPER-ADMIN' &&  (
                   <Button
                     variant="info"
                     size="sm"
@@ -68,7 +68,7 @@ const UsersListAdmin = () => {
                     Сделать врачом
                   </Button>
                 )}
-                {user.role !== 'PATIENT' && (
+                {user.role !== 'PATIENT' && user.role !== 'SUPER-ADMIN' && (
                   <Button
                     variant="secondary"
                     size="sm"
@@ -78,9 +78,12 @@ const UsersListAdmin = () => {
                     Сделать пациентом
                   </Button>
                 )}
-                <Button variant="danger" size="sm" onClick={() => handleDelete(user.userId)}>
-                  Удалить
-                </Button>
+                 {user.role !== 'SUPER-ADMIN' && (
+                  <Button variant="danger" size="sm" onClick={() => handleDelete(user.userId)}>
+                    Удалить
+                  </Button>
+                )}
+                
               </td>
             </tr>
           ))}

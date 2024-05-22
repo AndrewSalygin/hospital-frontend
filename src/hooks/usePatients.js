@@ -34,16 +34,39 @@ const usePatients = ({
   });
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
-  const [searchTerms, setSearchTerms] = useState({
-    lastName: '',
-    firstName: '',
-    middleName: '',
-    dateOfBirth: ''
+  const [searchTerms, setSearchTerms] = useState(() => {
+    const savedTerms = localStorage.getItem('searchTerms');
+    return savedTerms ? JSON.parse(savedTerms) : {
+      lastName: '',
+      firstName: '',
+      middleName: '',
+      dateOfBirth: ''
+    };
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const patientsPerPage = 5;
+
+  useEffect(() => {
+    localStorage.setItem('searchTerms', JSON.stringify(searchTerms));
+    const lowercasedTerms = {
+      lastName: (searchTerms.lastName || '').toLowerCase(),
+      firstName: (searchTerms.firstName || '').toLowerCase(),
+      middleName: (searchTerms.middleName || '').toLowerCase(),
+      dateOfBirth: (searchTerms.dateOfBirth || '').toLowerCase()
+    };
+    const visiblePatients = patients.filter(patient => {
+      return (
+        (patient.lastName || '').toLowerCase().includes(lowercasedTerms.lastName) &&
+        (patient.firstName || '').toLowerCase().includes(lowercasedTerms.firstName) &&
+        (patient.middleName || '').toLowerCase().includes(lowercasedTerms.middleName) &&
+        (patient.dateOfBirth || '').toLowerCase().includes(lowercasedTerms.dateOfBirth)
+      );
+    });
+    setFilteredPatients(visiblePatients);
+  }, [searchTerms, patients]);
+
 
   // Получение данных конкретного пациента с сервера
   useEffect(() => {
