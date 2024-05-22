@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { PatientProvider } from './context/PatientContext';
 import { routesConfig } from './routesConfig';
-import { users as initialUsers } from './fakeData/Users';
 import Layout from './components/UIComponents/Layout';
 import NotFound from './pages/UtilPages/NotFound';
 import Login from './pages/Authorization/Login';
@@ -16,11 +15,7 @@ import AuthRedirectRoute from './components/UtilComponents/AuthRedirectRoute';
 import AdminLogin from './pages/Authorization/AdminLogin';
 
 const App = () => {
-  const [users, setUsers] = useState(initialUsers);
-
-  const routes = routesConfig({
-    users, setUsers
-  });
+  const routes = routesConfig();
 
   return (
     <BrowserRouter>

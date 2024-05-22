@@ -2,24 +2,24 @@ import { useState, useEffect } from 'react';
 import axios from '../api/axiosConfig';
 
 // Функции для работы с API пользователей
-const getUsers = (limit, offset) => axios.get('/super-admin-users', { params: { limit, offset } });
+const getUsers = () => axios.get('/super-admin-users', { params: { limit: -1, offset: 0 } });
 const deleteUser = (userId) => axios.delete(`/super-admin-users/${userId}`);
-const changeUserRights = (userId, newRole) => axios.post(`/super-admin-users/userRights/${userId}`, { role: newRole });
+const changeUserRights = (userId, newRole) => axios.post(`/super-admin-users/userRights/${userId}`, null, { params: { role: newRole } });
 
-const useUsers = ({ limit = -1, offset = 0 } = {}) => {
+const useUsers = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const usersPerPage = limit;
+  const usersPerPage = 5;
 
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const { data } = await getUsers(limit, offset);
+        const { data } = await getUsers();
         setUsers(data);
         setLoading(false);
       } catch (error) {
@@ -28,7 +28,7 @@ const useUsers = ({ limit = -1, offset = 0 } = {}) => {
       }
     };
     fetchUsers();
-  }, [limit, offset]);
+  }, []);
 
   useEffect(() => {
     const lowercasedTerm = searchTerm.toLowerCase();
@@ -62,12 +62,14 @@ const useUsers = ({ limit = -1, offset = 0 } = {}) => {
     }
   };
 
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+
   return {
     users: filteredUsers.slice((currentPage - 1) * usersPerPage, currentPage * usersPerPage),
     searchTerm,
     setSearchTerm,
     currentPage,
-    totalPages: Math.ceil(filteredUsers.length / usersPerPage),
+    totalPages,
     setCurrentPage: handlePageChange,
     handleChangeRights,
     handleDelete,

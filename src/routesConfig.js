@@ -3,34 +3,13 @@ import TablePage from './components/UIComponents/TablePage';
 import PatientsList from './pages/Patients/PatientsList';
 import AddPatient from './pages/Patients/AddPatient';
 import TrashPatientsListAdmin from './pages/Patients/TrashPatientsListAdmin';
-import UsersListAdmin from './pages/Admin/Users/UsersListAdmin';
+import UsersListAdmin from './pages/Users/UsersList';
 import PatientDetails from './pages/Patients/PatientDetails';
 import EditPatient from './pages/Patients/EditPatient';
-import { deleteForeverUser, changeRights } from './scripts/UsersScripts';
 import ProtectedRoute from './components/UtilComponents/ProtectedRoute';
 import NotFound from './pages/UtilPages/NotFound';
 
-export const routesConfig = ({
-  patients, setPatients,
-  users, setUsers,
-  handleDeletePatient, handleDeleteForeverPatient, handleUnDeletePatient
-}) => {
-  // Действия, связанные с пользователями
-  const userActions = {
-    users,
-    deleteUser: (userId) => { deleteForeverUser(users, setUsers, userId) },
-    changeRights: (userId, newRole) => { changeRights(users, setUsers, userId, newRole) }
-  };
-
-  // Действия, связанные с пациентами
-  const patientActions = {
-    patients,
-    setPatients,
-    deletePatient: handleDeletePatient,
-    deleteForeverPatient: handleDeleteForeverPatient,
-    unDeletePatient: handleUnDeletePatient
-  };
-
+export const routesConfig = () => {
   // Возвращаем массив объектов, описывающих маршруты
   return [
     {
@@ -38,7 +17,6 @@ export const routesConfig = ({
       element: (
         <ProtectedRoute element={
           <TablePage
-            data={userActions}
             titleName="Список пользователей"
             ListComponent={UsersListAdmin}
           />
@@ -50,7 +28,6 @@ export const routesConfig = ({
       element: (
         <ProtectedRoute element={
           <TablePage
-            data={patientActions}
             titleName="Список пациентов"
             buttonName="Добавить нового пациента"
             buttonLink="/new-patient"
@@ -66,7 +43,6 @@ export const routesConfig = ({
       element: (
         <ProtectedRoute element={
           <TablePage
-            data={patientActions}
             titleName="Список пациентов"
             buttonName="Добавить нового пациента"
             buttonLink="/admin/new-patient"
@@ -80,7 +56,6 @@ export const routesConfig = ({
       element: (
         <ProtectedRoute element={
           <TablePage
-            data={patientActions}
             titleName="Список пациентов в архиве"
             ListComponent={TrashPatientsListAdmin}
           />

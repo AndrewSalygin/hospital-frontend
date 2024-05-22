@@ -1,8 +1,8 @@
 import React from 'react';
 import { Container, Alert, Table, Form, Button, Pagination } from 'react-bootstrap';
-import useUsers from '../../../hooks/useUsers';
-import LoadingSpinner from '../../../components/UIComponents/LoadingSpinner';
-import '../../../styles/greenPagination.css';
+import useUsers from '../../hooks/useUsers';
+import LoadingSpinner from '../../components/UIComponents/LoadingSpinner';
+import '../../styles/greenPagination.css';
 
 const UsersListAdmin = () => {
   const {
@@ -16,7 +16,7 @@ const UsersListAdmin = () => {
     handleDelete,
     loading,
     error
-  } = useUsers({ limit: 5 });
+  } = useUsers({ limit: -1 });
 
   if (loading) {
     return <LoadingSpinner />;
@@ -58,14 +58,24 @@ const UsersListAdmin = () => {
                     Сделать админом
                   </Button>
                 )}
-                {user.role !== 'USER' && (
+                {user.role !== 'DOCTOR' && (
                   <Button
                     variant="info"
                     size="sm"
-                    onClick={() => handleChangeRights(user.userId, 'USER')}
+                    onClick={() => handleChangeRights(user.userId, 'DOCTOR')}
                     className="me-2"
                   >
                     Сделать врачом
+                  </Button>
+                )}
+                {user.role !== 'PATIENT' && (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => handleChangeRights(user.userId, 'PATIENT')}
+                    className="me-2"
+                  >
+                    Сделать пациентом
                   </Button>
                 )}
                 <Button variant="danger" size="sm" onClick={() => handleDelete(user.userId)}>
