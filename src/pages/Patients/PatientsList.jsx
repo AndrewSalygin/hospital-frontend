@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import usePatients from '../../hooks/usePatients';
 import PatientSearchForm from '../../components/Patients/PatientSearchForm';
 import PatientsTable from '../../components/Patients/PatientsTable';
-import PaginationComponent from '../../components/Patients/PaginationComponent';
+import PaginationComponent from '../../components/PaginationComponent';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import '../../styles/greenPagination.css';
 

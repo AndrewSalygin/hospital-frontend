@@ -5,7 +5,7 @@ import usePatientData from '../../hooks/usePatients';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import PatientSearchForm from '../../components/Patients/PatientSearchForm';
 import TrashPatientsTable from '../../components/Patients/TrashPatientsTable';
-import PaginationComponent from '../../components/Patients/PaginationComponent';
+import PaginationComponent from '../../components/PaginationComponent';
 import '../../styles/greenPagination.css';
 
 const TrashPatientsListAdmin = () => {

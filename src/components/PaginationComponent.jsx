@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pagination } from 'react-bootstrap';
-import '../../styles/PaginationComponent.css';
+import '../styles/PaginationComponent.css';
 
 const PaginationComponent = ({ currentPage, totalPages, handlePageChange }) => {
   const visiblePages = 5;
