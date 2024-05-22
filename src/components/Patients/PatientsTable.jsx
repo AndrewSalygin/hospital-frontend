@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Button } from 'react-bootstrap';
 
-const PatientsTable = ({ patients, handleRowClick, handleDelete, isAdmin }) => (
+const PatientsTable = ({ patients, handleRowClick, handleDelete, handleUnDelete, isAdmin, isTrash }) => (
   <Table striped bordered hover>
     <thead>
       <tr>
@@ -11,7 +11,7 @@ const PatientsTable = ({ patients, handleRowClick, handleDelete, isAdmin }) => (
         <th>Отчество</th>
         <th>Пол</th>
         <th>Дата рождения</th>
-        {isAdmin && <th>Действия</th>}
+        {(isAdmin || isTrash) && <th>Действия</th>}
       </tr>
     </thead>
     <tbody>
@@ -27,14 +27,23 @@ const PatientsTable = ({ patients, handleRowClick, handleDelete, isAdmin }) => (
           <td>{patient.middleName}</td>
           <td>{patient.gender}</td>
           <td>{patient.dateOfBirth}</td>
-          {isAdmin && (
+          {(isAdmin || isTrash) && (
             <td>
-              <Button 
-                variant="danger" 
-                onClick={(e) => { e.stopPropagation(); handleDelete(patient.patientId); }}
-              >
-                Удалить
-              </Button>
+              {isTrash ? (
+                <Button
+                  variant="secondary"
+                  onClick={(e) => { e.stopPropagation(); handleUnDelete(patient.patientId); }}
+                >
+                  Вернуть из архива
+                </Button>
+              ) : (
+                <Button
+                  variant="danger"
+                  onClick={(e) => { e.stopPropagation(); handleDelete(patient.patientId); }}
+                >
+                  Удалить
+                </Button>
+              )}
             </td>
           )}
         </tr>

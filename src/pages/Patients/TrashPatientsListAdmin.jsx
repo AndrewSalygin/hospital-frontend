@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import usePatientData from '../../hooks/usePatients';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import PatientSearchForm from '../../components/Patients/PatientSearchForm';
-import TrashPatientsTable from '../../components/Patients/TrashPatientsTable';
+import PatientsTable from '../../components/Patients/PatientsTable';
 import PaginationComponent from '../../components/PaginationComponent';
 import '../../styles/greenPagination.css';
 
@@ -59,10 +59,11 @@ const TrashPatientsListAdmin = () => {
         <Alert variant="info">Нет пациентов в архиве</Alert>
       ) : (
         <>
-          <TrashPatientsTable
+          <PatientsTable
             patients={patients}
             handleRowClick={handleRowClick}
             handleUnDelete={handleUnDelete}
+            isTrash={true}
           />
           <PaginationComponent
             currentPage={currentPage}
