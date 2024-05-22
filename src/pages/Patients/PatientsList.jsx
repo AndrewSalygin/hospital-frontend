@@ -19,7 +19,7 @@ const PatientsList = ({ buttonName, buttonLink, isAdmin = false }) => {
     handleDeletePatient,
     loading,
     error
-  } = usePatients();
+  } = usePatients({ isAdmin });
 
   const navigate = useNavigate();
 

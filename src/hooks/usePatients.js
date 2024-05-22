@@ -12,6 +12,7 @@ import {
   handleUnDeletePatientState
 } from '../api/Patients';
 
+// Универсальный хук для управления данными пациента и списком пациентов
 const usePatientData = ({
   patientId = null,
   setPatient = null,

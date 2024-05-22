@@ -1,104 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Form, Pagination, Button } from 'react-bootstrap';
+import React from 'react';
+import { Container, Alert, Table, Form, Button, Pagination } from 'react-bootstrap';
+import useUsers from '../../../hooks/useUsers';
+import LoadingSpinner from '../../../components/UIComponents/LoadingSpinner';
 import '../../../styles/greenPagination.css';
 
-const UsersListAdmin = ({ users, deleteUser, changeRights }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState(users || []);
-  const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 5;
-  const visiblePages = 5;
+const UsersListAdmin = () => {
+  const {
+    users,
+    searchTerm,
+    setSearchTerm,
+    currentPage,
+    totalPages,
+    setCurrentPage,
+    handleChangeRights,
+    handleDelete,
+    loading,
+    error
+  } = useUsers({ limit: 5 });
 
-  useEffect(() => {
-    const lowercasedTerm = searchTerm.toLowerCase();
-    const visibleUsers = users.filter(
-      (user) =>
-        !user.isDeleted &&
-        Object.values(user).join(' ').toLowerCase().includes(lowercasedTerm)
-    );
-    setFilteredUsers(visibleUsers);
-  }, [searchTerm, users]);
-
-  const indexOfLastPatient = currentPage * usersPerPage;
-  const indexOfFirstPatient = indexOfLastPatient - usersPerPage;
-  const currentUsers = filteredUsers.slice(indexOfFirstPatient, indexOfLastPatient);
-  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
-
-  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
-
-  // Pagination controls
-  const goToPreviousPage = () => {
-    if (currentPage > 1) handlePageChange(currentPage - 1);
-  };
-
-  const goToNextPage = () => {
-    if (currentPage < totalPages) handlePageChange(currentPage + 1);
-  };
-
-  // Determine the range of page numbers to display
-  let startPage = Math.max(1, currentPage - Math.floor(visiblePages / 2));
-  let endPage = startPage + visiblePages - 1;
-  if (endPage > totalPages) {
-    endPage = totalPages;
-    startPage = Math.max(1, endPage - visiblePages + 1);
+  if (loading) {
+    return <LoadingSpinner />;
   }
-
-  // Create a range of page numbers to render
-  const pages = [];
-  for (let i = startPage; i <= endPage; i++) {
-    pages.push(
-      <Pagination.Item
-        key={i}
-        active={i === currentPage}
-        onClick={() => handlePageChange(i)}
-      >
-        {i}
-      </Pagination.Item>
-    );
-  }
-
-  // Button click handler for changing user rights
-  const handleChangeRights = (userId, newRole) => {
-    changeRights(userId, newRole);
-  };
-
-  const handleDelete = (userId) => {
-    deleteUser(userId);
-  };
-
-  // Function to render the appropriate role buttons
-  const renderRoleButtons = (user) => {
-    const buttons = [];
-    if (user.role === 'NEW') {
-      buttons.push(
-        <Button variant="success" size="sm" onClick={() => handleChangeRights(user.userId, 'ADMIN')} className="me-2">
-          Сделать админом
-        </Button>
-      );
-      buttons.push(
-        <Button variant="info" size="sm" onClick={() => handleChangeRights(user.userId, 'USER')} className="me-2">
-          Сделать врачом
-        </Button>
-      );
-    } else if (user.role === 'ADMIN') {
-      buttons.push(
-        <Button variant="info" size="sm" onClick={() => handleChangeRights(user.userId, 'USER')} className="me-2">
-          Сделать врачом
-        </Button>
-      );
-    } else if (user.role === 'USER') {
-      buttons.push(
-        <Button variant="success" size="sm" onClick={() => handleChangeRights(user.userId, 'ADMIN')} className="me-2">
-          Сделать админом
-        </Button>
-      );
-    }
-
-    return buttons;
-  };
 
   return (
-    <div className="container mt-3">
+    <Container className="mt-3">
       <Form.Control
         type="text"
         placeholder="Поиск по любому полю..."
@@ -106,7 +31,7 @@ const UsersListAdmin = ({ users, deleteUser, changeRights }) => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-
+      {error && <Alert variant="danger">{error}</Alert>}
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -117,13 +42,32 @@ const UsersListAdmin = ({ users, deleteUser, changeRights }) => {
           </tr>
         </thead>
         <tbody>
-          {currentUsers.map((user, index) => (
+          {users.map((user, index) => (
             <tr key={user.userId}>
-              <td>{indexOfFirstPatient + index + 1}</td>
+              <td>{index + 1}</td>
               <td>{user.email}</td>
               <td>{user.role}</td>
               <td>
-                {renderRoleButtons(user)}
+                {user.role !== 'ADMIN' && (
+                  <Button
+                    variant="success"
+                    size="sm"
+                    onClick={() => handleChangeRights(user.userId, 'ADMIN')}
+                    className="me-2"
+                  >
+                    Сделать админом
+                  </Button>
+                )}
+                {user.role !== 'USER' && (
+                  <Button
+                    variant="info"
+                    size="sm"
+                    onClick={() => handleChangeRights(user.userId, 'USER')}
+                    className="me-2"
+                  >
+                    Сделать врачом
+                  </Button>
+                )}
                 <Button variant="danger" size="sm" onClick={() => handleDelete(user.userId)}>
                   Удалить
                 </Button>
@@ -132,17 +76,20 @@ const UsersListAdmin = ({ users, deleteUser, changeRights }) => {
           ))}
         </tbody>
       </Table>
-
       <Pagination className="pagination-success mt-3">
-        <Pagination.Prev onClick={goToPreviousPage} disabled={currentPage === 1}>
+        <Pagination.Prev onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
           Назад
         </Pagination.Prev>
-        {pages}
-        <Pagination.Next onClick={goToNextPage} disabled={currentPage === totalPages}>
+        {[...Array(totalPages).keys()].map((page) => (
+          <Pagination.Item key={page + 1} active={page + 1 === currentPage} onClick={() => setCurrentPage(page + 1)}>
+            {page + 1}
+          </Pagination.Item>
+        ))}
+        <Pagination.Next onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages}>
           Вперёд
         </Pagination.Next>
       </Pagination>
-    </div>
+    </Container>
   );
 };
 
