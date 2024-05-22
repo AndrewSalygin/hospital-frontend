@@ -13,7 +13,7 @@ import {
 } from '../api/Patients';
 
 // Универсальный хук для управления данными пациента и списком пациентов
-const usePatientData = ({
+const usePatients = ({
   patientId = null,
   setPatient = null,
   limit = -1,
@@ -180,4 +180,4 @@ const usePatientData = ({
   };
 };
 
-export default usePatientData;
+export default usePatients;
