@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from "react-bootstrap";
-import './../styles/TablePage.css';
+import './../../styles/TablePage.css';
 
 const TablePage = ({ data, buttonName, buttonLink, titleName, ListComponent }) => {
   return (

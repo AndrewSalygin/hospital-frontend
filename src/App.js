@@ -6,14 +6,14 @@ import { PatientProvider } from './context/PatientContext';
 import usePatients from './hooks/usePatients';
 import { routesConfig } from './routesConfig';
 import { users as initialUsers } from './fakeData/Users';
-import Layout from './components/Layout';
-import NotFound from './pages/NotFound';
+import Layout from './components/UIComponents/Layout';
+import NotFound from './pages/UtilPages/NotFound';
 import Login from './pages/Authorization/Login';
 import Registration from './pages/Authorization/Registration';
-import HomePage from './pages/HomePage';
-import ForbiddenPage from './pages/ForbiddenPage';
-import ProtectedRoute from './components/ProtectedRoute';
-import AuthRedirectRoute from './components/AuthRedirectRoute';
+import HomePage from './pages/UtilPages/HomePage';
+import ForbiddenPage from './pages/UtilPages/ForbiddenPage';
+import ProtectedRoute from './components/UtilComponents/ProtectedRoute';
+import AuthRedirectRoute from './components/UtilComponents/AuthRedirectRoute';
 import AdminLogin from './pages/Authorization/AdminLogin';
 
 const App = () => {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { Form, Button, Card, Container, Alert } from 'react-bootstrap';
-import EditPatientFormComponent from '../../components/Patients/EditPatientFormComponent.jsx';
+import EditPatientFormComponent from '../../components/Patients/EditPatientFormComponent';
 import { usePatient } from '../../context/PatientContext';
 import usePatientData from '../../hooks/usePatients.js';
-import LoadingSpinner from '../../components/LoadingSpinner';
-import ErrorAlert from '../../components/ErrorAlert';
+import LoadingSpinner from '../../components/UIComponents/LoadingSpinner.jsx';
+import ErrorAlert from '../../components/Patients/ErrorAlertPatientNotFound';
 
 const EditPatient = ({ isAdmin = false }) => {
   const { patientId } = useParams();

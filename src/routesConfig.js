@@ -1,5 +1,5 @@
 import React from 'react';
-import TablePage from './components/TablePage';
+import TablePage from './components/UIComponents/TablePage';
 import PatientsList from './pages/Patients/PatientsList';
 import AddPatient from './pages/Patients/AddPatient';
 import TrashPatientsListAdmin from './pages/Patients/TrashPatientsListAdmin';
@@ -7,8 +7,8 @@ import UsersListAdmin from './pages/Admin/Users/UsersListAdmin';
 import PatientDetails from './pages/Patients/PatientDetails';
 import EditPatient from './pages/Patients/EditPatient';
 import { deleteForeverUser, changeRights } from './scripts/UsersScripts';
-import ProtectedRoute from './components/ProtectedRoute';
-import NotFound from './pages/NotFound';
+import ProtectedRoute from './components/UtilComponents/ProtectedRoute';
+import NotFound from './pages/UtilPages/NotFound';
 
 export const routesConfig = ({
   patients, setPatients,

@@ -4,8 +4,8 @@ import { Card, Button, Container } from 'react-bootstrap';
 import PatientDetailsComponent from '../../components/Patients/PatientDetailsComponent';
 import { usePatient } from '../../context/PatientContext';
 import usePatientData from '../../hooks/usePatients';
-import LoadingSpinner from '../../components/LoadingSpinner';
-import ErrorAlert from '../../components/ErrorAlert';
+import LoadingSpinner from '../../components/UIComponents/LoadingSpinner';
+import ErrorAlert from '../../components/Patients/ErrorAlertPatientNotFound';
 
 const PatientDetails = ({ isAdmin = false }) => {
   const { patientId } = useParams();

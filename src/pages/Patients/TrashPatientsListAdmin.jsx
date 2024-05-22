@@ -2,10 +2,10 @@ import React from 'react';
 import { Container, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import usePatientData from '../../hooks/usePatients';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from '../../components/UIComponents/LoadingSpinner';
 import PatientSearchForm from '../../components/Patients/PatientSearchForm';
 import PatientsTable from '../../components/Patients/PatientsTable';
-import PaginationComponent from '../../components/PaginationComponent';
+import PaginationComponent from '../../components/UIComponents/PaginationComponent';
 import '../../styles/greenPagination.css';
 
 const TrashPatientsListAdmin = () => {
