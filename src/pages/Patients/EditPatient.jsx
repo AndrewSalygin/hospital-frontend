@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import { Form, Button, Card, Container, Alert } from 'react-bootstrap';
 import EditPatientFormComponent from '../../components/Patients/EditPatientFormComponent.jsx';
 import { usePatient } from '../../context/PatientContext';
@@ -10,6 +10,7 @@ import ErrorAlert from '../../components/ErrorAlert';
 const EditPatient = ({ isAdmin = false }) => {
   const { patientId } = useParams();
   const navigate = useNavigate();
+  const { state } = useLocation();
   const { patient, setPatient } = usePatient();
   const {
     formData,
@@ -28,6 +29,8 @@ const EditPatient = ({ isAdmin = false }) => {
     return <ErrorAlert message="Пожалуйста, проверьте идентификатор пациента или попробуйте еще раз." />;
   }
 
+  const backLink = state?.fromTrash ? '/admin/patients/trash' : isAdmin ? `/admin/patients/${patientId}` : `/patients/${patientId}`;
+
   return (
     <Container className="mt-5 mb-5 d-flex justify-content-center">
       <Card className="shadow-lg border-0 rounded-3" style={{ maxWidth: '700px', width: '100%' }}>
@@ -44,7 +47,7 @@ const EditPatient = ({ isAdmin = false }) => {
             />
             <div className="d-flex justify-content-between">
               <Button variant="success" type="submit" className="px-4 py-2 rounded-pill">Сохранить изменения</Button>
-              <Button variant="secondary" as={Link} to={isAdmin ? `/admin/patients/${patientId}` : `/patients/${patientId}`} className="px-4 py-2 rounded-pill">Вернуться</Button>
+              <Button variant="secondary" as={Link} to={backLink} className="px-4 py-2 rounded-pill">Вернуться</Button>
             </div>
           </Form>
         </Card.Body>

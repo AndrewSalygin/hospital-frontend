@@ -1,12 +1,12 @@
 import React from 'react';
 import { Container, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import usePatientData from '../../../hooks/usePatients';
-import LoadingSpinner from '../../../components/LoadingSpinner';
-import PatientSearchForm from '../../../components/Admin/Patients/PatientSearchForm';
-import TrashPatientsTable from '../../../components/Patients/TrashPatientsTable';
-import PaginationComponent from '../../../components/Admin/Patients/PaginationComponent';
-import '../../../styles/greenPagination.css';
+import usePatientData from '../../hooks/usePatients';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import PatientSearchForm from '../../components/Admin/Patients/PatientSearchForm';
+import TrashPatientsTable from '../../components/Patients/TrashPatientsTable';
+import PaginationComponent from '../../components/Admin/Patients/PaginationComponent';
+import '../../styles/greenPagination.css';
 
 const TrashPatientsListAdmin = () => {
   const navigate = useNavigate();
@@ -31,7 +31,11 @@ const TrashPatientsListAdmin = () => {
   };
 
   const handleRowClick = (patientId) => {
-    navigate(`/admin/patients/${patientId}`);
+    navigate(`/admin/patients/${patientId}`, { state: { fromTrash: true } });
+  };
+
+  const handleUnDelete = async (patientId) => {
+    await handleUnDeletePatient(patientId);
   };
 
   if (loading) {
@@ -58,7 +62,7 @@ const TrashPatientsListAdmin = () => {
           <TrashPatientsTable
             patients={patients}
             handleRowClick={handleRowClick}
-            handleUnDelete={handleUnDeletePatient}
+            handleUnDelete={handleUnDelete}
           />
           <PaginationComponent
             currentPage={currentPage}

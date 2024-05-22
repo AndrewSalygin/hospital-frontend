@@ -2,7 +2,7 @@ import React from 'react';
 import TablePage from './components/TablePage';
 import PatientsList from './pages/Patients/PatientsList';
 import AddPatient from './pages/Patients/AddPatient';
-import TrashPatientsListAdmin from './pages/Admin/Patients/TrashPatientsListAdmin';
+import TrashPatientsListAdmin from './pages/Patients/TrashPatientsListAdmin';
 import UsersListAdmin from './pages/Admin/Users/UsersListAdmin';
 import PatientDetails from './pages/Patients/PatientDetails';
 import EditPatient from './pages/Patients/EditPatient';
