@@ -34,7 +34,7 @@ export const Login = () => {
               const token = response.data.jwtToken;
               const decoded = jwtDecode(token);
               
-              if (decoded.role === 'PATIENT' || decoded.role === 'DOCTOR') {
+              if (decoded.role === 'DOCTOR') {
                 localStorage.setItem('token', token);
                 navigate('/patients');
               } else {

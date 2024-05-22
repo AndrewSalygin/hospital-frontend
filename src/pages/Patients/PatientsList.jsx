@@ -16,6 +16,7 @@ const PatientsList = ({ buttonName, buttonLink, isAdmin = false }) => {
     currentPage,
     totalPages,
     setCurrentPage,
+    handleDeletePatient,
     loading,
     error
   } = usePatients();
@@ -53,7 +54,12 @@ const PatientsList = ({ buttonName, buttonLink, isAdmin = false }) => {
         <Alert variant="info">Нет пациентов</Alert>
       ) : (
         <>
-          <PatientsTable patients={patients} handleRowClick={handleRowClick} />
+          <PatientsTable 
+            patients={patients} 
+            handleRowClick={handleRowClick} 
+            handleDelete={handleDeletePatient} 
+            isAdmin={isAdmin} 
+          />
           <PaginationComponent
             currentPage={currentPage}
             totalPages={totalPages}
