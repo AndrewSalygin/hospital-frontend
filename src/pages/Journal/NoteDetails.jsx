@@ -43,6 +43,8 @@ const NoteDetails = ({ isAdmin = false }) => {
   const [showRecipeModal, setShowRecipeModal] = useState(false);
   const [newRecipeMedicationId, setNewRecipeMedicationId] = useState('');
   const [newRecipeExpirationDate, setNewRecipeExpirationDate] = useState('');
+  const [showTreatmentCostModal, setShowTreatmentCostModal] = useState(false);
+  const [treatmentCost, setTreatmentCost] = useState(null);
 
   useEffect(() => {
     const fetchNoteDetails = async () => {
@@ -310,6 +312,16 @@ const NoteDetails = ({ isAdmin = false }) => {
     }
   };
 
+  const handleFetchTreatmentCost = async (treatmentId) => {
+    try {
+      const response = await axios.get(`/treatments/price/${treatmentId}`);
+      setTreatmentCost(response.data[0]);
+      setShowTreatmentCostModal(true);
+    } catch (error) {
+      setError('Не удалось получить стоимость лечения');
+    }
+  };
+
   if (loading) {
     return (
       <Container className="mt-5 d-flex justify-content-center">
@@ -380,6 +392,9 @@ const NoteDetails = ({ isAdmin = false }) => {
                               setResultsOfTreatment(disease.resultsOfTreatment);
                               setShowUpdateResultModal(true);
                             }}>Изменить результат лечения</Button>
+                            <Button variant="primary" onClick={() => handleFetchTreatmentCost(disease.treatmentId)}>
+                              Стоимость лечения
+                            </Button>
                           </p>
                           <p><strong>Результаты лечения:</strong> {disease.resultsOfTreatment}</p>
                           <h4 className="mt-3">Медикаменты</h4>
@@ -693,6 +708,29 @@ const NoteDetails = ({ isAdmin = false }) => {
           </Button>
           <Button variant="success" onClick={handleAddRecipe}>
             Выписать
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Модальное окно для отображения стоимости лечения */}
+      <Modal show={showTreatmentCostModal} onHide={() => setShowTreatmentCostModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Стоимость лечения</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {treatmentCost ? (
+            <>
+              <p><strong>Общая стоимость медикаментов:</strong> {treatmentCost.totalMedicationsCost ? treatmentCost.totalMedicationsCost : 0}</p>
+              <p><strong>Общая стоимость медицинских процедур:</strong> {treatmentCost.totalMedicalProceduresCost ? treatmentCost.totalMedicalProceduresCost : 0 }</p>
+              <p><strong>Общая стоимость:</strong> {treatmentCost.totalCost ? treatmentCost.totalCost : 0 }</p>
+            </>
+          ) : (
+            <p>Загрузка...</p>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowTreatmentCostModal(false)}>
+            Закрыть
           </Button>
         </Modal.Footer>
       </Modal>
