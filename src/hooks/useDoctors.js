@@ -154,6 +154,20 @@ const useDoctors = ({
     }
   };
 
+  const handleUnDeleteDoctor = async (doctorId) => {
+    try {
+      await axios.patch(`/super-admin-doctors/${doctorId}`);
+      setDoctors(prevDoctors => prevDoctors.map(doc => {
+        if (doc.doctorId === doctorId) {
+          return { ...doc, isDeleted: false };
+        }
+        return doc;
+      }));
+    } catch (err) {
+      setError('Не удалось восстановить врача');
+    }
+  };
+
   return {
     // Данные конкретного врача и обработчики формы
     formData,
@@ -169,7 +183,10 @@ const useDoctors = ({
     totalPages: Math.ceil(filteredDoctors.length / doctorsPerPage), // Общее количество страниц
     setCurrentPage, // Функция для обновления текущей страницы
     handleDeleteDoctor, // Функция для удаления врача
-
+    handleUnDeleteDoctor,
+    setDoctors,
+    setError,
+    
     // Общее состояние
     loading, // Состояние загрузки данных
     error // Состояние ошибки

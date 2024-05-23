@@ -17,8 +17,11 @@ const DoctorsList = ({ buttonName, buttonLink, isAdmin = false }) => {
     totalPages,
     setCurrentPage,
     handleDeleteDoctor,
+    handleUnDeleteDoctor,
     loading,
-    error
+    error,
+    setDoctors,
+    setError
   } = useDoctors({ isAdmin });
 
   const navigate = useNavigate();
@@ -35,6 +38,16 @@ const DoctorsList = ({ buttonName, buttonLink, isAdmin = false }) => {
 
   const handleRowClick = (doctorId) => {
     navigate(isAdmin ? `/admin/doctors/${doctorId}` : `/doctors/${doctorId}`);
+  };
+
+  const handleDelete = async (doctorId) => {
+    try {
+      await handleDeleteDoctor(doctorId);
+      // Фильтруем всех врачей, удаляя все записи с doctorId
+      setDoctors(prevDoctors => prevDoctors.filter(doc => doc.doctorId !== doctorId));
+    } catch (error) {
+      setError('Не удалось удалить врача');
+    }
   };
 
   if (loading) {
@@ -88,7 +101,7 @@ const DoctorsList = ({ buttonName, buttonLink, isAdmin = false }) => {
           <DoctorsTable 
             doctors={doctors} 
             handleRowClick={handleRowClick} 
-            handleDelete={handleDeleteDoctor} 
+            handleDelete={handleDelete} 
             isAdmin={isAdmin} 
           />
           <PaginationComponent

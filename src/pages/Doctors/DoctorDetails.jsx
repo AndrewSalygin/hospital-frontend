@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
-import { Card, Button, Container } from 'react-bootstrap';
+import { Card, Button, Container, Modal } from 'react-bootstrap';
 import DoctorDetailsComponent from '../../components/Doctors/DoctorDetailsComponent';
 import { useDoctor } from '../../context/DoctorContext';
 import useDoctorData from '../../hooks/useDoctors';
 import LoadingSpinner from '../../components/UIComponents/LoadingSpinner';
 import ErrorAlert from '../../components/Doctors/ErrorAlertDoctorNotFound';
 import { useAuth } from '../../context/AuthContext';
+import axios from '../../api/axiosConfig';
 
 const DoctorDetails = ({ isAdmin = false }) => {
   const { doctorId } = useParams();
@@ -16,6 +17,29 @@ const DoctorDetails = ({ isAdmin = false }) => {
   const { role } = useAuth(); // Получаем роль из контекста аутентификации
 
   const isSuperAdmin = role === 'SUPER-ADMIN';
+
+  const [showSpecializationsModal, setShowSpecializationsModal] = useState(false);
+  const [specializations, setSpecializations] = useState([]);
+  const [loadingSpecializations, setLoadingSpecializations] = useState(false);
+  const [errorSpecializations, setErrorSpecializations] = useState(null);
+
+  const handleShowSpecializationsModal = async () => {
+    setShowSpecializationsModal(true);
+    setLoadingSpecializations(true);
+    setErrorSpecializations(null);
+    try {
+      const response = await axios.get(`/doctors/specializations/${doctorId}`);
+      setSpecializations(response.data);
+    } catch (err) {
+      setErrorSpecializations('Не удалось получить специализации врача');
+    } finally {
+      setLoadingSpecializations(false);
+    }
+  };
+
+  const handleCloseSpecializationsModal = () => {
+    setShowSpecializationsModal(false);
+  };
 
   if (loading) {
     return <LoadingSpinner />;
@@ -30,7 +54,6 @@ const DoctorDetails = ({ isAdmin = false }) => {
   }
 
   const backLink = state?.fromTrash ? '/admin/doctors/trash' : isAdmin ? "/admin/doctors" : "/doctors";
-  const specializationsLink = `/doctors/specializations/${doctorId}`;
 
   return (
     <Container className="mt-5 mb-5 d-flex justify-content-center">
@@ -60,8 +83,7 @@ const DoctorDetails = ({ isAdmin = false }) => {
           <div className="mt-3">
             <Button
               variant="info"
-              as={Link}
-              to={specializationsLink}
+              onClick={handleShowSpecializationsModal}
               className="px-4 py-2 rounded-pill"
             >
               Посмотреть специализации врача
@@ -69,6 +91,35 @@ const DoctorDetails = ({ isAdmin = false }) => {
           </div>
         </Card.Body>
       </Card>
+
+      <Modal show={showSpecializationsModal} onHide={handleCloseSpecializationsModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Специализации врача</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {loadingSpecializations ? (
+            <LoadingSpinner />
+          ) : errorSpecializations ? (
+            <ErrorAlert variant="danger">{errorSpecializations}</ErrorAlert>
+          ) : specializations.length === 0 ? (
+            <p>Нет специализаций для этого врача</p>
+          ) : (
+            <ul>
+              {specializations.map((specialization) => (
+                <li key={specialization.specializationId}>
+                  <strong>Название:</strong> {specialization.specializationName}<br/>
+                  <strong>Опыт:</strong> {specialization.yearsOfExperience} лет
+                </li>
+              ))}
+            </ul>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseSpecializationsModal}>
+            Закрыть
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };
