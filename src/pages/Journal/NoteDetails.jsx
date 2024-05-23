@@ -35,6 +35,14 @@ const NoteDetails = ({ isAdmin = false }) => {
   const [procedureList, setProcedureList] = useState([]);
   const [showAnamnesisModal, setShowAnamnesisModal] = useState(false);
   const [anamnesis, setAnamnesis] = useState('');
+  const [showUpdateResultModal, setShowUpdateResultModal] = useState(false);
+  const [resultsOfTreatment, setResultsOfTreatment] = useState('');
+  const [selectedDiseaseId, setSelectedDiseaseId] = useState('');
+  const [selectedTreatmentId, setSelectedTreatmentId] = useState('');
+  const [recipes, setRecipes] = useState([]);
+  const [showRecipeModal, setShowRecipeModal] = useState(false);
+  const [newRecipeMedicationId, setNewRecipeMedicationId] = useState('');
+  const [newRecipeExpirationDate, setNewRecipeExpirationDate] = useState('');
 
   useEffect(() => {
     const fetchNoteDetails = async () => {
@@ -94,6 +102,10 @@ const NoteDetails = ({ isAdmin = false }) => {
 
         setMedications(fetchedMedications);
         setMedicalProcedures(fetchedMedicalProcedures);
+
+        // Fetch recipes
+        const recipesResponse = await axios.get(`/journal-patient/note/recipe/${noteId}`);
+        setRecipes(recipesResponse.data);
       } catch (error) {
         setError('Не удалось получить детали записи');
       } finally {
@@ -222,6 +234,19 @@ const NoteDetails = ({ isAdmin = false }) => {
     }
   };
 
+  const handleUpdateResultsOfTreatment = async () => {
+    try {
+      await axios.patch(`/journal-patient/note/treatment/${noteId}`, null, {
+        params: { diseaseId: selectedDiseaseId, treatmentId: selectedTreatmentId, resultsOfTreatment }
+      });
+      setShowUpdateResultModal(false);
+      const noteResponse = await axios.get(`/journal-patient/${noteId}`);
+      setNote(noteResponse.data);
+    } catch (error) {
+      setError('Не удалось обновить результаты лечения');
+    }
+  };
+
   const handleDeleteDisease = async (diseaseId) => {
     try {
       await axios.delete(`/journal-patient/note/disease/${noteId}`, { params: { diseaseId } });
@@ -268,6 +293,23 @@ const NoteDetails = ({ isAdmin = false }) => {
     }
   };
 
+  const handleAddRecipe = async () => {
+    try {
+      await axios.post(`/patients/recipes/${patientId}`, null, {
+        params: {
+          medicationId: newRecipeMedicationId,
+          expirationDate: newRecipeExpirationDate,
+          medicalHistoryNoteId: noteId
+        }
+      });
+      setShowRecipeModal(false);
+      const recipesResponse = await axios.get(`/journal-patient/note/recipe/${noteId}`);
+      setRecipes(recipesResponse.data);
+    } catch (error) {
+      setError('Не удалось выписать рецепт');
+    }
+  };
+
   if (loading) {
     return (
       <Container className="mt-5 d-flex justify-content-center">
@@ -302,7 +344,10 @@ const NoteDetails = ({ isAdmin = false }) => {
           <p><strong>Дата и время приёма:</strong> {new Date(note.admissionDateTime).toLocaleString()}</p>
           <p>
             <strong>Анамнез:</strong> {note.anamnesis} 
-            <Button variant="link" onClick={() => setShowAnamnesisModal(true)}>Изменить</Button>
+            <Button variant="link" onClick={() => {
+              setAnamnesis(note.anamnesis);
+              setShowAnamnesisModal(true);
+            }}>Изменить</Button>
           </p>
           <h3 className="mt-4">Список болезней</h3>
           <Button variant="success" className="mb-3" onClick={() => setShowDiseaseModal(true)}>Добавить болезнь и лечение</Button>
@@ -327,7 +372,15 @@ const NoteDetails = ({ isAdmin = false }) => {
                       <p><strong>Код болезни:</strong> {diseaseDetails[disease.diseaseId] ? diseaseDetails[disease.diseaseId].diseaseCode : 'Загрузка...'}</p>
                       {disease.treatmentId ? (
                         <>
-                          <p><strong>Лечение:</strong> {treatmentDetails[disease.treatmentId] ? treatmentDetails[disease.treatmentId].treatmentName : 'Загрузка...'}</p>
+                          <p>
+                            <strong>Лечение:</strong> {treatmentDetails[disease.treatmentId] ? treatmentDetails[disease.treatmentId].treatmentName : 'Загрузка...'}
+                            <Button variant="link" onClick={() => {
+                              setSelectedDiseaseId(disease.diseaseId);
+                              setSelectedTreatmentId(disease.treatmentId);
+                              setResultsOfTreatment(disease.resultsOfTreatment);
+                              setShowUpdateResultModal(true);
+                            }}>Изменить результат лечения</Button>
+                          </p>
                           <p><strong>Результаты лечения:</strong> {disease.resultsOfTreatment}</p>
                           <h4 className="mt-3">Медикаменты</h4>
                           <Button variant="success" onClick={() => {
@@ -376,6 +429,24 @@ const NoteDetails = ({ isAdmin = false }) => {
                       )}
                     </div>
                   )}
+                </li>
+              ))}
+            </ul>
+          )}
+          <h3 className="mt-4">Выписанные рецепты</h3>
+          <Button variant="success" className="mb-3" onClick={() => setShowRecipeModal(true)}>Выписать рецепт</Button>
+          {recipes.length === 0 ? (
+            <p>Нет выписанных рецептов</p>
+          ) : (
+            <ul>
+              {recipes.map((recipe) => (
+                <li key={recipe.recipeId}>
+                  <p><strong>Название медикамента:</strong> {recipe.medicationName}</p>
+                  <p><strong>Форма медикамента:</strong> {recipe.medicationForm}</p>
+                  <p><strong>Дозировка:</strong> {recipe.dosage}</p>
+                  <p><strong>Дата назначения:</strong> {new Date(recipe.admissionDateTime).toLocaleDateString()}</p>
+                  <p><strong>Дата окончания действия:</strong> {new Date(recipe.expirationDate).toLocaleDateString()}</p>
+                  <p><strong>Доктор:</strong> {recipe.doctorLastName} {recipe.doctorFirstName} {recipe.doctorMiddleName}</p>
                 </li>
               ))}
             </ul>
@@ -552,6 +623,76 @@ const NoteDetails = ({ isAdmin = false }) => {
           </Button>
           <Button variant="success" onClick={handleUpdateAnamnesis}>
             Изменить
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Модальное окно для изменения результатов лечения */}
+      <Modal show={showUpdateResultModal} onHide={() => setShowUpdateResultModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Изменить результаты лечения</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="resultsOfTreatment">
+              <Form.Label>Результаты лечения</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={resultsOfTreatment}
+                onChange={(e) => setResultsOfTreatment(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowUpdateResultModal(false)}>
+            Отмена
+          </Button>
+          <Button variant="success" onClick={handleUpdateResultsOfTreatment}>
+            Изменить
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Модальное окно для выписки рецепта */}
+      <Modal show={showRecipeModal} onHide={() => setShowRecipeModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Выписать рецепт</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="newRecipeMedicationId">
+              <Form.Label>Медикамент</Form.Label>
+              <Form.Control
+                as="select"
+                value={newRecipeMedicationId}
+                onChange={(e) => setNewRecipeMedicationId(e.target.value)}
+              >
+                <option value="">Выберите медикамент</option>
+                {medicationList.map(medication => (
+                  <option key={medication.medicationId} value={medication.medicationId}>
+                    {medication.medicationName}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+            <Form.Group controlId="newRecipeExpirationDate">
+              <Form.Label>Дата окончания действия рецепта</Form.Label>
+              <Form.Control
+                type="date"
+                value={newRecipeExpirationDate}
+                onChange={(e) => setNewRecipeExpirationDate(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowRecipeModal(false)}>
+            Отмена
+          </Button>
+          <Button variant="success" onClick={handleAddRecipe}>
+            Выписать
           </Button>
         </Modal.Footer>
       </Modal>
