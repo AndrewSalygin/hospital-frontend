@@ -61,6 +61,14 @@ const PatientMeetingsList = ({ isAdmin = false }) => {
           name="doctorName"
           value={searchTerms.doctorName}
           onChange={handleSearchChange}
+          className="mb-2"
+        />
+        <Form.Control
+          type="date"
+          placeholder="Поиск по дате приёма..."
+          name="admissionDate"
+          value={searchTerms.admissionDate}
+          onChange={handleSearchChange}
         />
       </Form>
       {error && <Alert variant="danger">{error}</Alert>}
