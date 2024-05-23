@@ -11,6 +11,8 @@ import NotFound from './pages/UtilPages/NotFound';
 import NewNote from './pages/Journal/NewNote';
 import PatientMeetingsList from './pages/Journal/PatientMeetingsList';
 import NoteDetails from './pages/Journal/NoteDetails';
+import MedicationsList from './pages/Medications/MedicationsList';
+import MedicationEdit from './pages/Medications/MedicationEdit';
 
 export const routesConfig = () => {
   return [
@@ -74,6 +76,20 @@ export const routesConfig = () => {
     { path: "/admin/patients/:patientId/notes", element: <ProtectedRouteWithRole element={<PatientMeetingsList isAdmin={true} />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} /> },
     { path: "/patients/:patientId/notes/:noteId", element: <ProtectedRouteWithRole element={<NoteDetails isAdmin={false} />} allowedRoles={["DOCTOR", "ADMIN", "SUPER-ADMIN"]} /> },
     { path: "/admin/patients/:patientId/notes/:noteId", element: <ProtectedRouteWithRole element={<NoteDetails isAdmin={true} />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} /> },
+    {
+      path: "/admin/medications",
+      element: (
+        <ProtectedRouteWithRole element={
+          <TablePage
+            titleName="Список медикаментов"
+            buttonName="Добавить новый медикамент"
+            buttonLink="/admin/medications/new"
+            ListComponent={(props) => <MedicationsList {...props} isAdmin={true} />}
+          />
+        } allowedRoles={["ADMIN", "SUPER-ADMIN"]} />
+      ),
+    },
+    { path: "/admin/medications/:medicationId", element: <ProtectedRouteWithRole element={<MedicationEdit />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} /> },
     { path: "*", element: <NotFound /> },
   ];
 };
