@@ -14,6 +14,11 @@ import NoteDetails from './pages/Journal/NoteDetails';
 import MedicationsList from './pages/Medications/MedicationsList';
 import MedicationEdit from './pages/Medications/MedicationEdit';
 import AddMedication from './pages/Medications/AddMedication';
+import DoctorsList from './pages/Doctors/DoctorsList';
+import EditDoctor from './pages/Doctors/EditDoctor';
+import DoctorDetails from './pages/Doctors/DoctorDetails';
+import AddDoctor from './pages/Doctors/AddDoctor';
+import TrashDoctorsListAdmin from './pages/Doctors/TrashDoctorsListAdmin';
 
 export const routesConfig = () => {
   return [
@@ -70,7 +75,7 @@ export const routesConfig = () => {
     { path: "/admin/patients/:patientId", element: <ProtectedRouteWithRole element={<PatientDetails isAdmin={true} />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} /> },
     { path: "/admin/patients/:patientId/edit", element: <ProtectedRouteWithRole element={<EditPatient isAdmin={true} />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} /> },
     { path: "/patients/:patientId", element: <ProtectedRouteWithRole element={<PatientDetails isAdmin={false} />} allowedRoles={["DOCTOR", "ADMIN", "SUPER-ADMIN"]} /> },
-    { path: "/patients/:patientId/edit", element: <ProtectedRouteWithRole element={<EditPatient isAdmin={false} />} allowedRoles={["DOCTOR", "ADMIN", "SUPER-ADMIN"]} /> },
+    { path: "/patients/:patientId/edit", element: <ProtectedRouteWithRole element={<EditPatient isAdmin={false} />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} /> },
     { path: "/admin/patients/:patientId/new-note", element: <ProtectedRouteWithRole element={<NewNote isAdmin={true} />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} /> },
     { path: "/patients/:patientId/new-note", element: <ProtectedRouteWithRole element={<NewNote isAdmin={false} />} allowedRoles={["DOCTOR", "ADMIN", "SUPER-ADMIN"]} /> },
     { path: "/patients/:patientId/notes", element: <ProtectedRouteWithRole element={<PatientMeetingsList isAdmin={false} />} allowedRoles={["DOCTOR", "ADMIN", "SUPER-ADMIN"]} /> },
@@ -97,6 +102,46 @@ export const routesConfig = () => {
       ),
     },
     { path: "/admin/medications/:medicationId", element: <ProtectedRouteWithRole element={<MedicationEdit />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} /> },
+    {
+      path: "/super-admin/doctors",
+      element: (
+        <ProtectedRouteWithRole element={<DoctorsList isAdmin={true} />} allowedRoles={["SUPER-ADMIN"]} />
+      ),
+    },
+    {
+      path: "/admin/doctors",
+      element: (
+        <ProtectedRouteWithRole element={
+          <TablePage
+            titleName="Список врачей"
+            buttonName="Добавить нового врача"
+            buttonLink="/admin/doctors/new"
+            ListComponent={(props) => <DoctorsList {...props} isAdmin={true} />}
+          />
+        } allowedRoles={["ADMIN", "SUPER-ADMIN"]} />
+      ),
+    },
+    {
+      path: "/doctors",
+      element: (
+        <ProtectedRouteWithRole element={
+          <TablePage
+            titleName="Список врачей"
+            ListComponent={(props) => <DoctorsList {...props} isAdmin={false} />}
+          />
+        } allowedRoles={["DOCTOR", "ADMIN", "SUPER-ADMIN"]} />
+      ),
+    },
+    { path: "/doctors/:doctorId", element: <ProtectedRouteWithRole element={<DoctorDetails isAdmin={false}/>} allowedRoles={["DOCTOR", "ADMIN", "SUPER-ADMIN"]} /> },
+    { path: "/admin/doctors/:doctorId", element: <ProtectedRouteWithRole element={<DoctorDetails isAdmin={true} />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} /> },
+    { path: "/admin/doctors/:doctorId/edit", element: <ProtectedRouteWithRole element={<EditDoctor isAdmin={true} />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} /> },
+    {
+      path: "/super-admin/doctors/new-doctor",
+      element: (
+        <ProtectedRouteWithRole element={<AddDoctor />} allowedRoles={["SUPER-ADMIN"]} />
+      ),
+    },
+    { path: "/admin/doctors/trash", element: <ProtectedRouteWithRole element={<TrashDoctorsListAdmin />} allowedRoles={["SUPER-ADMIN"]} /> },
     { path: "*", element: <NotFound /> },
   ];
 };

@@ -6,12 +6,17 @@ import { usePatient } from '../../context/PatientContext';
 import usePatientData from '../../hooks/usePatients';
 import LoadingSpinner from '../../components/UIComponents/LoadingSpinner';
 import ErrorAlert from '../../components/Patients/ErrorAlertPatientNotFound';
+import { useAuth } from '../../context/AuthContext';
 
 const PatientDetails = ({ isAdmin = false }) => {
   const { patientId } = useParams();
   const { state } = useLocation();
   const { patient, setPatient } = usePatient();
   const { loading, error } = usePatientData({ patientId, setPatient });
+  const { user } = useAuth();
+
+  const isSuperAdmin = user?.role === 'SUPER-ADMIN';
+  const isAdminOrSuperAdmin = isAdmin || isSuperAdmin;
 
   if (loading) {
     return <LoadingSpinner />;
@@ -25,8 +30,8 @@ const PatientDetails = ({ isAdmin = false }) => {
     return <ErrorAlert message="Пациент не найден." />;
   }
 
-  const backLink = state?.fromTrash ? '/admin/patients/trash' : isAdmin ? "/admin/patients" : "/patients";
-  const notesLink = isAdmin ? `/admin/patients/${patientId}/notes` : `/patients/${patientId}/notes`;
+  const backLink = state?.fromTrash ? '/admin/patients/trash' : isAdminOrSuperAdmin ? "/admin/patients" : "/patients";
+  const notesLink = isAdminOrSuperAdmin ? `/admin/patients/${patientId}/notes` : `/patients/${patientId}/notes`;
 
   return (
     <Container className="mt-5 mb-5 d-flex justify-content-center">
@@ -34,26 +39,25 @@ const PatientDetails = ({ isAdmin = false }) => {
         <PatientDetailsComponent patient={patient} />
         <Card.Body className="p-5 pt-0">
           <div className="d-flex justify-content-between flex-wrap">
-            {!patient.isDeleted && (
+            {!patient.isDeleted && isAdminOrSuperAdmin && (
               <>
                 <Button
                   variant="success"
                   as={Link}
-                  to={isAdmin ? `/admin/patients/${patientId}/edit` : `/patients/${patientId}/edit`}
+                  to={isAdminOrSuperAdmin ? `/admin/patients/${patientId}/edit` : `/patients/${patientId}/edit`}
                   className="px-4 py-2 rounded-pill mb-2"
                 >
                   Изменить информацию
                 </Button>
-                <Button
+              </>
+            )}
+            <Button
                   variant="primary"
                   as={Link}
                   to={isAdmin ? `/admin/patients/${patientId}/new-note` : `/patients/${patientId}/new-note`}
-                  className="px-4 py-2 rounded-pill mb-2"
-                >
+                  className="px-4 py-2 rounded-pill mb-2">
                   Записать на приём
-                </Button>
-              </>
-            )}
+            </Button>
             <Button
               variant="secondary"
               as={Link}

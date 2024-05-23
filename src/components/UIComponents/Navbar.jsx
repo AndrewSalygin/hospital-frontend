@@ -33,6 +33,15 @@ const CustomNavbar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end mt-lg-0 mt-3">
           <Nav className="align-items-lg-center" style={{ gap: '1rem' }}>
+            {isAuthenticated && (userRole === 'ADMIN' || userRole === 'DOCTOR') && (
+              <Nav.Link href="/doctors">Врачи</Nav.Link>
+            )}
+            {isAuthenticated && (userRole === 'SUPER-ADMIN') && (
+              <NavDropdown title="Врачи" id="patients-dropdown">
+                <GreenNavDropdownItem href="/admin/doctors">Текущие врачи</GreenNavDropdownItem>
+                <GreenNavDropdownItem href="/admin/doctors/trash">Врачи в архиве</GreenNavDropdownItem>
+              </NavDropdown>
+            )}
             {isAuthenticated && (userRole === 'SUPER-ADMIN' || userRole === 'ADMIN') && (
               <Nav.Link href="/admin/medications">Медикаменты</Nav.Link>
             )}
