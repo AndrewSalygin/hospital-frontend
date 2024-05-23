@@ -13,6 +13,7 @@ import PatientMeetingsList from './pages/Journal/PatientMeetingsList';
 import NoteDetails from './pages/Journal/NoteDetails';
 import MedicationsList from './pages/Medications/MedicationsList';
 import MedicationEdit from './pages/Medications/MedicationEdit';
+import AddMedication from './pages/Medications/AddMedication';
 
 export const routesConfig = () => {
   return [
@@ -87,6 +88,12 @@ export const routesConfig = () => {
             ListComponent={(props) => <MedicationsList {...props} isAdmin={true} />}
           />
         } allowedRoles={["ADMIN", "SUPER-ADMIN"]} />
+      ),
+    },
+    {
+      path: "/admin/medications/add",
+      element: (
+        <ProtectedRouteWithRole element={<AddMedication onMedicationAdded={() => {}} />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} />
       ),
     },
     { path: "/admin/medications/:medicationId", element: <ProtectedRouteWithRole element={<MedicationEdit />} allowedRoles={["ADMIN", "SUPER-ADMIN"]} /> },

@@ -231,6 +231,15 @@ const MedicationsList = ({ isAdmin = false }) => {
           )}
         </>
       )}
+      {isAdmin && (
+        <Button
+          variant="success"
+          onClick={() => navigate('/admin/medications/add')}
+          className="mt-3"
+        >
+          Добавить медикамент
+        </Button>
+      )}
     </Container>
   );
 };
