@@ -33,6 +33,8 @@ const NoteDetails = ({ isAdmin = false }) => {
   const [diseaseList, setDiseaseList] = useState([]);
   const [medicationList, setMedicationList] = useState([]);
   const [procedureList, setProcedureList] = useState([]);
+  const [showAnamnesisModal, setShowAnamnesisModal] = useState(false);
+  const [anamnesis, setAnamnesis] = useState('');
 
   useEffect(() => {
     const fetchNoteDetails = async () => {
@@ -207,6 +209,65 @@ const NoteDetails = ({ isAdmin = false }) => {
     }
   };
 
+  const handleUpdateAnamnesis = async () => {
+    try {
+      await axios.patch(`/journal-patient/note/anamnesis/${noteId}`, null, {
+        params: { anamnesis }
+      });
+      setShowAnamnesisModal(false);
+      const noteResponse = await axios.get(`/journal-patient/${noteId}`);
+      setNote(noteResponse.data);
+    } catch (error) {
+      setError('Не удалось обновить анамнез');
+    }
+  };
+
+  const handleDeleteDisease = async (diseaseId) => {
+    try {
+      await axios.delete(`/journal-patient/note/disease/${noteId}`, { params: { diseaseId } });
+      const noteResponse = await axios.get(`/journal-patient/${noteId}`);
+      setNote(noteResponse.data);
+    } catch (error) {
+      setError('Не удалось удалить болезнь');
+    }
+  };
+
+  const handleDeleteTreatment = async (diseaseId, treatmentId) => {
+    try {
+      await axios.delete(`/journal-patient/note/treatment/${noteId}`, { params: { diseaseId, treatmentId } });
+      const noteResponse = await axios.get(`/journal-patient/${noteId}`);
+      setNote(noteResponse.data);
+    } catch (error) {
+      setError('Не удалось удалить лечение');
+    }
+  };
+
+  const handleDeleteMedication = async (treatmentId, medicationId) => {
+    try {
+      await axios.delete(`/treatments/medications/${treatmentId}/${medicationId}`);
+      const response = await axios.get(`/treatments/medications/${treatmentId}`);
+      setMedications(prevState => ({
+        ...prevState,
+        [treatmentId]: response.data
+      }));
+    } catch (error) {
+      setError('Не удалось удалить медикамент');
+    }
+  };
+
+  const handleDeleteProcedure = async (treatmentId, procedureId) => {
+    try {
+      await axios.delete(`/treatments/medicalProcedures/${treatmentId}/${procedureId}`);
+      const response = await axios.get(`/treatments/medicalProcedures/${treatmentId}`);
+      setMedicalProcedures(prevState => ({
+        ...prevState,
+        [treatmentId]: response.data
+      }));
+    } catch (error) {
+      setError('Не удалось удалить медицинскую процедуру');
+    }
+  };
+
   if (loading) {
     return (
       <Container className="mt-5 d-flex justify-content-center">
@@ -239,7 +300,10 @@ const NoteDetails = ({ isAdmin = false }) => {
           <p><strong>Выписка:</strong> {note.discharge ? 'Да' : 'Нет'}</p>
           <p><strong>Статус пациента:</strong> {note.patientStatus}</p>
           <p><strong>Дата и время приёма:</strong> {new Date(note.admissionDateTime).toLocaleString()}</p>
-          <p><strong>Анамнез:</strong> {note.anamnesis}</p>
+          <p>
+            <strong>Анамнез:</strong> {note.anamnesis} 
+            <Button variant="link" onClick={() => setShowAnamnesisModal(true)}>Изменить</Button>
+          </p>
           <h3 className="mt-4">Список болезней</h3>
           <Button variant="success" className="mb-3" onClick={() => setShowDiseaseModal(true)}>Добавить болезнь и лечение</Button>
           {note.diseaseList.length === 0 ? (
@@ -256,6 +320,7 @@ const NoteDetails = ({ isAdmin = false }) => {
                   >
                     ({diseaseDetails[disease.diseaseId] ? diseaseDetails[disease.diseaseId].diseaseName + ' лечение' : 'Новое лечение'}) (нажмите для {expandedDiseases[disease.diseaseId] ? 'сворачивания' : 'раскрытия'})
                   </Button>
+                  <Button variant="danger" size="sm" onClick={() => handleDeleteDisease(disease.diseaseId)}>Удалить болезнь</Button>
                   {expandedDiseases[disease.diseaseId] && (
                     <div id={`disease-details-${disease.diseaseId}`} className="mt-2">
                       <p><strong>Название болезни:</strong> {diseaseDetails[disease.diseaseId] ? diseaseDetails[disease.diseaseId].diseaseName : 'Загрузка...'}</p>
@@ -265,7 +330,7 @@ const NoteDetails = ({ isAdmin = false }) => {
                           <p><strong>Лечение:</strong> {treatmentDetails[disease.treatmentId] ? treatmentDetails[disease.treatmentId].treatmentName : 'Загрузка...'}</p>
                           <p><strong>Результаты лечения:</strong> {disease.resultsOfTreatment}</p>
                           <h4 className="mt-3">Медикаменты</h4>
-                          <Button variant="primary" onClick={() => {
+                          <Button variant="success" onClick={() => {
                             setCurrentTreatmentId(disease.treatmentId);
                             setShowMedicationModal(true);
                           }}>Добавить медикамент</Button>
@@ -275,13 +340,15 @@ const NoteDetails = ({ isAdmin = false }) => {
                                 {medications[disease.treatmentId].map(medication => (
                                   <li key={medication.medicationId}>
                                     {medication.medicationName} - {medication.dosage} - {medication.doctorInstructions}
+                                    <br/>
+                                    <Button variant="danger" size="sm" onClick={() => handleDeleteMedication(disease.treatmentId, medication.medicationId)}>Удалить</Button>
                                   </li>
                                 ))}
                               </ul>
                             ) : <p>Нет медикаментов для этого лечения</p>
                           ) : <p>Загрузка...</p>}
                           <h4 className="mt-3">Медицинские процедуры</h4>
-                          <Button variant="primary" onClick={() => {
+                          <Button variant="success" onClick={() => {
                             setCurrentTreatmentId(disease.treatmentId);
                             setShowProcedureModal(true);
                           }}>Добавить медицинскую процедуру</Button>
@@ -291,6 +358,8 @@ const NoteDetails = ({ isAdmin = false }) => {
                                 {medicalProcedures[disease.treatmentId].map(procedure => (
                                   <li key={procedure.medicalProcedureId}>
                                     {procedure.medicalProcedureName} - {procedure.doctorInstructions}
+                                    <br/>
+                                    <Button variant="danger" size="sm" onClick={() => handleDeleteProcedure(disease.treatmentId, procedure.medicalProcedureId)}>Удалить</Button>
                                   </li>
                                 ))}
                               </ul>
@@ -353,7 +422,7 @@ const NoteDetails = ({ isAdmin = false }) => {
           <Button variant="secondary" onClick={() => setShowDiseaseModal(false)}>
             Отмена
           </Button>
-          <Button variant="primary" onClick={handleAddDiseaseAndTreatment}>
+          <Button variant="success" onClick={handleAddDiseaseAndTreatment}>
             Добавить
           </Button>
         </Modal.Footer>
@@ -403,7 +472,7 @@ const NoteDetails = ({ isAdmin = false }) => {
           <Button variant="secondary" onClick={() => setShowMedicationModal(false)}>
             Отмена
           </Button>
-          <Button variant="primary" onClick={handleAddMedication}>
+          <Button variant="success" onClick={handleAddMedication}>
             Добавить
           </Button>
         </Modal.Footer>
@@ -453,8 +522,36 @@ const NoteDetails = ({ isAdmin = false }) => {
           <Button variant="secondary" onClick={() => setShowProcedureModal(false)}>
             Отмена
           </Button>
-          <Button variant="primary" onClick={handleAddProcedure}>
+          <Button variant="success" onClick={handleAddProcedure}>
             Добавить
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Модальное окно для изменения анамнеза */}
+      <Modal show={showAnamnesisModal} onHide={() => setShowAnamnesisModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Изменить анамнез</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="anamnesis">
+              <Form.Label>Анамнез</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={anamnesis}
+                onChange={(e) => setAnamnesis(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowAnamnesisModal(false)}>
+            Отмена
+          </Button>
+          <Button variant="success" onClick={handleUpdateAnamnesis}>
+            Изменить
           </Button>
         </Modal.Footer>
       </Modal>
