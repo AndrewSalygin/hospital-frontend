@@ -1,3 +1,9 @@
+# Hospital management system 
+
+Проект написан на `JavaScript` с использованием `React`, `Bootstrap`.
+
+Для работы требуется бекенд: https://github.com/AndrewSalygin/hospital-backend.
+
 ![1](https://github.com/AndrewSalygin/hospital-frontend/assets/46914821/d64785b5-5ae5-49a6-9720-756284d003c4)
 ![2](https://github.com/AndrewSalygin/hospital-frontend/assets/46914821/2cc8464f-8640-44a8-bc74-79d00c62a1ac)
 ![3](https://github.com/AndrewSalygin/hospital-frontend/assets/46914821/7fe438a9-f499-4cfb-8b7c-64c02fe6bc0e)
